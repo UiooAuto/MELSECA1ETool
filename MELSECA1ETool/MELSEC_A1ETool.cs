@@ -502,23 +502,31 @@ namespace MELSECA1ETool
             byte[] bytes = null;
             ReadResult<ushort> result = new ReadResult<ushort>();
             result.IsSuccess = false; //默认值为false，失败
-            /*string recStr;
-            byte[] bytes = null;
-            ReadResult<ushort> result = new ReadResult<ushort>();
-            result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".U\r", out bytes, out readLength);
-
-            if (isSuccess)
-            {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                ushort recShort = ushort.Parse(recStr);
-                result.IsSuccess = true;
-                result.Content = recShort;
-            }
-            return result;*/
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, 1, ConnectTimeOut);
             bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
+
+            //如果Socket通信失败，则返回失败
+            if (!isSuccess)
+            {
+                return result;
+            }
+
+            MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+            //如果返回报文为失败，则返回失败和错误码
+            if (response.endCode == EndCode.ERROR)
+            {
+                result.errorCode = response.errorCode;
+                return result;
+            }
+
+            result.IsSuccess = true;
+
+            result.Content = response.bytes[1];
+            result.Content = (ushort)(result.Content << 8);
+            result.Content = (ushort)(result.Content | response.bytes[0]);
+
             return result;
         }
 
@@ -553,23 +561,35 @@ namespace MELSECA1ETool
             byte[] bytes = null;
             ReadResult<ushort[]> result = new ReadResult<ushort[]>();
             result.IsSuccess = false; //默认值为false，失败
-            /*string recStr;
-            byte[] bytes = null;
-            ReadResult<ushort> result = new ReadResult<ushort>();
-            result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".U\r", out bytes, out readLength);
-
-            if (isSuccess)
-            {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                ushort recShort = ushort.Parse(recStr);
-                result.IsSuccess = true;
-                result.Content = recShort;
-            }
-            return result;*/
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, length, ConnectTimeOut);
             bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
+
+            //如果Socket通信失败，则返回失败
+            if (!isSuccess)
+            {
+                return result;
+            }
+
+            MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+            //如果返回报文为失败，则返回失败和错误码
+            if (response.endCode == EndCode.ERROR)
+            {
+                result.errorCode = response.errorCode;
+                return result;
+            }
+
+            result.IsSuccess = true;
+
+            result.Content = new ushort[length];
+            for (int i = 0; i < length; i++)
+            {
+                result.Content[i] = response.bytes[(i * 2) + 1];
+                result.Content[i] = (ushort)(result.Content[i] << 8);
+                result.Content[i] = (ushort)(result.Content[i] | response.bytes[i * 2]);
+            }
+
             return result;
         }
 
@@ -749,6 +769,7 @@ namespace MELSECA1ETool
     {
         public bool IsSuccess;
         public T Content;
+        public byte errorCode;
     }
 
     #region 专用枚举
@@ -776,6 +797,15 @@ namespace MELSECA1ETool
     }
 
     /// <summary>
+    /// 用于处理响应报文时对照操作类型的副帧头响应
+    /// </summary>
+    public enum EndCode : byte
+    {
+        OK = 0x00,
+        ERROR = 0x5b,
+    }
+
+    /// <summary>
     /// 用于生成请求报文时指定地址类型的枚举
     /// </summary>
     public enum MELSECAddressName : ushort
@@ -789,6 +819,8 @@ namespace MELSECA1ETool
     }
 
     #endregion
+
+    #region 请求报文内容
 
     /// <summary>
     /// 三菱MC协议请求报文
@@ -825,7 +857,7 @@ namespace MELSECA1ETool
         /// <param name="address">操作地址</param>
         /// <param name="length">操作数量</param>
         /// <param name="overTime">超时时间</param>
-        public MELSEC_A1E_Request(SubframeRequest request, string address, int length,int overTime)
+        public MELSEC_A1E_Request(SubframeRequest request, string address, int length, int overTime)
         {
             MELSECAddressName addressName;
             string addresstype = address.Substring(0, 1);
@@ -1002,4 +1034,39 @@ namespace MELSECA1ETool
         }
 
     }
+
+    #endregion
+
+    #region 响应报文数据
+
+    public class MELSEC_A1E_Response
+    {
+        public SubframeAck ack;
+        public EndCode endCode;
+        public byte errorCode;
+        public byte[] bytes;
+
+        public MELSEC_A1E_Response(byte[] value)
+        {
+            ack = (SubframeAck)value[0];
+            endCode = (EndCode)value[1];
+            if (value.Length > 2)
+            {
+                if (endCode == EndCode.ERROR)
+                {
+                    errorCode = (byte)value[2];
+                }
+                else if (endCode == EndCode.OK)
+                {
+                    bytes = new byte[value.Length - 2];
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        bytes[i] = value[i + 2];
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
 }

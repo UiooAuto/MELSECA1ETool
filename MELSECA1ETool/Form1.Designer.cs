@@ -331,7 +331,6 @@
             // 
             // tb_ReadWordLength
             // 
-            this.tb_ReadWordLength.Enabled = false;
             this.tb_ReadWordLength.Location = new System.Drawing.Point(214, 284);
             this.tb_ReadWordLength.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tb_ReadWordLength.Name = "tb_ReadWordLength";
