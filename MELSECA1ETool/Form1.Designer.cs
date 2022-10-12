@@ -62,6 +62,14 @@
             this.tb_ip = new System.Windows.Forms.TextBox();
             this.btn_ReadBool = new System.Windows.Forms.Button();
             this.connect = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.btn_WriteString = new System.Windows.Forms.Button();
+            this.btn_ReadString = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // listBox2
@@ -84,11 +92,12 @@
             this.btn_CheckConnect.TabIndex = 77;
             this.btn_CheckConnect.Text = "连接测试";
             this.btn_CheckConnect.UseVisualStyleBackColor = true;
+            this.btn_CheckConnect.Visible = false;
             this.btn_CheckConnect.Click += new System.EventHandler(this.btn_CheckConnect_Click);
             // 
             // btn_StopThreadRead
             // 
-            this.btn_StopThreadRead.Location = new System.Drawing.Point(711, 536);
+            this.btn_StopThreadRead.Location = new System.Drawing.Point(711, 672);
             this.btn_StopThreadRead.Margin = new System.Windows.Forms.Padding(4);
             this.btn_StopThreadRead.Name = "btn_StopThreadRead";
             this.btn_StopThreadRead.Size = new System.Drawing.Size(140, 34);
@@ -100,7 +109,7 @@
             // cb_ThreadReadOpen
             // 
             this.cb_ThreadReadOpen.AutoSize = true;
-            this.cb_ThreadReadOpen.Location = new System.Drawing.Point(612, 542);
+            this.cb_ThreadReadOpen.Location = new System.Drawing.Point(612, 678);
             this.cb_ThreadReadOpen.Margin = new System.Windows.Forms.Padding(4);
             this.cb_ThreadReadOpen.Name = "cb_ThreadReadOpen";
             this.cb_ThreadReadOpen.Size = new System.Drawing.Size(88, 22);
@@ -195,6 +204,7 @@
             // 
             // btn_WriteDWord
             // 
+            this.btn_WriteDWord.Enabled = false;
             this.btn_WriteDWord.Location = new System.Drawing.Point(711, 466);
             this.btn_WriteDWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteDWord.Name = "btn_WriteDWord";
@@ -206,6 +216,7 @@
             // 
             // btn_ReadDWord
             // 
+            this.btn_ReadDWord.Enabled = false;
             this.btn_ReadDWord.Location = new System.Drawing.Point(711, 410);
             this.btn_ReadDWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadDWord.Name = "btn_ReadDWord";
@@ -262,6 +273,7 @@
             // 
             // btn_WriteWord
             // 
+            this.btn_WriteWord.Enabled = false;
             this.btn_WriteWord.Location = new System.Drawing.Point(711, 340);
             this.btn_WriteWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteWord.Name = "btn_WriteWord";
@@ -273,6 +285,7 @@
             // 
             // btn_WriteBool
             // 
+            this.btn_WriteBool.Enabled = false;
             this.btn_WriteBool.Location = new System.Drawing.Point(711, 206);
             this.btn_WriteBool.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteBool.Name = "btn_WriteBool";
@@ -284,6 +297,7 @@
             // 
             // btn_ReadWord
             // 
+            this.btn_ReadWord.Enabled = false;
             this.btn_ReadWord.Location = new System.Drawing.Point(711, 284);
             this.btn_ReadWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadWord.Name = "btn_ReadWord";
@@ -382,6 +396,7 @@
             // 
             // btn_ReadBool
             // 
+            this.btn_ReadBool.Enabled = false;
             this.btn_ReadBool.Location = new System.Drawing.Point(711, 148);
             this.btn_ReadBool.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadBool.Name = "btn_ReadBool";
@@ -402,11 +417,97 @@
             this.connect.UseVisualStyleBackColor = true;
             this.connect.Click += new System.EventHandler(this.connect_Click);
             // 
+            // label6
+            // 
+            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label6.Location = new System.Drawing.Point(27, 644);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(825, 2);
+            this.label6.TabIndex = 86;
+            this.label6.Text = "label6";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(400, 542);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(88, 22);
+            this.checkBox1.TabIndex = 85;
+            this.checkBox1.Text = "有符号";
+            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // btn_WriteString
+            // 
+            this.btn_WriteString.Enabled = false;
+            this.btn_WriteString.Location = new System.Drawing.Point(711, 594);
+            this.btn_WriteString.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_WriteString.Name = "btn_WriteString";
+            this.btn_WriteString.Size = new System.Drawing.Size(140, 34);
+            this.btn_WriteString.TabIndex = 84;
+            this.btn_WriteString.Text = "写入字符串";
+            this.btn_WriteString.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadString
+            // 
+            this.btn_ReadString.Enabled = false;
+            this.btn_ReadString.Location = new System.Drawing.Point(711, 538);
+            this.btn_ReadString.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_ReadString.Name = "btn_ReadString";
+            this.btn_ReadString.Size = new System.Drawing.Size(140, 34);
+            this.btn_ReadString.TabIndex = 83;
+            this.btn_ReadString.Text = "读取字符串";
+            this.btn_ReadString.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(214, 594);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(466, 28);
+            this.textBox1.TabIndex = 82;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(30, 594);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(148, 28);
+            this.textBox2.TabIndex = 81;
+            this.textBox2.Text = "d100";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(214, 538);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(148, 28);
+            this.textBox3.TabIndex = 80;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(30, 538);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(148, 28);
+            this.textBox4.TabIndex = 79;
+            this.textBox4.Text = "d100";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1592, 927);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.btn_WriteString);
+            this.Controls.Add(this.btn_ReadString);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.btn_CheckConnect);
             this.Controls.Add(this.btn_StopThreadRead);
@@ -485,6 +586,14 @@
         private System.Windows.Forms.TextBox tb_ip;
         private System.Windows.Forms.Button btn_ReadBool;
         private System.Windows.Forms.Button connect;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button btn_WriteString;
+        private System.Windows.Forms.Button btn_ReadString;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }
 

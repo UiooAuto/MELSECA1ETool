@@ -102,6 +102,7 @@ namespace MELSECA1ETool
                 }
                 connect.Text = "断开";
                 Show1("连接");
+                ButtonNo();
             }
             else
             {
@@ -109,6 +110,7 @@ namespace MELSECA1ETool
                 plc2.ConnectClose();
                 connect.Text = "连接";
                 Show1("断开");
+                ButtonOff();
             }
         }
 
@@ -322,7 +324,7 @@ namespace MELSECA1ETool
 
         private void btn_WriteWord_Click(object sender, EventArgs e)
         {
-            /*bool v;
+            bool v;
 
             if (tb_WriteBoolValue.Text.Contains('，'))
             {
@@ -376,7 +378,7 @@ namespace MELSECA1ETool
             else
             {
                 Show1("写入失败");
-            }*/
+            }
         }
 
         public bool StringToBool(string value)
@@ -456,7 +458,7 @@ namespace MELSECA1ETool
 
         private void btn_WriteDWord_Click(object sender, EventArgs e)
         {
-            /*bool v;
+            bool v;
 
             if (tb_WriteBoolValue.Text.Contains('，'))
             {
@@ -492,7 +494,7 @@ namespace MELSECA1ETool
                     uint[] uints = new uint[strings.Length];
                     for (int i = 0; i < strings.Length; i++)
                     {
-                        uints[i] = uint.Parse(strings[i]);
+                        uints[i] = (uint)int.Parse(strings[i]);
                     }
                     Show1("开始写入");
                     v = plc1.Write(tb_WriteDWordAddress.Text, uints);
@@ -537,7 +539,7 @@ namespace MELSECA1ETool
                         Show1("写入失败");
                     }
                 }
-            }*/
+            }
         }
 
         private void btn_StopThreadRead_Click(object sender, EventArgs e)
@@ -564,6 +566,30 @@ namespace MELSECA1ETool
             {
                 Show("连接中断");
             }*/
+        }
+
+        public void ButtonOff()
+        {
+            btn_ReadBool.Enabled = false;
+            btn_WriteBool.Enabled = false;
+            btn_ReadWord.Enabled = false;
+            btn_WriteWord.Enabled = false;
+            btn_ReadDWord.Enabled = false;
+            btn_WriteDWord.Enabled = false;
+            btn_ReadString.Enabled = false;
+            btn_WriteString.Enabled = false;
+        }
+
+        public void ButtonNo()
+        {
+            btn_ReadBool.Enabled = false;
+            btn_WriteBool.Enabled = false;
+            btn_ReadWord.Enabled = true;
+            btn_WriteWord.Enabled = true;
+            btn_ReadDWord.Enabled = true;
+            btn_WriteDWord.Enabled = true;
+            btn_ReadString.Enabled = false;
+            btn_WriteString.Enabled = false;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Globalization;
 
 namespace MELSECA1ETool
 {
@@ -188,23 +189,26 @@ namespace MELSECA1ETool
 
         #region 写入PLC
 
-        /*public bool Write(string address, ushort cmd)
+        public bool Write(string address, ushort cmd)
         {
             int readLength;
-            bool b = sendto("WR " + address + ".U " + cmd + "\r");
+            ushort[] ushorts = new ushort[] { cmd };
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts, ConnectTimeOut);
+
+            bool b = sendto(request.GetBytes());
             if (b)
             {
                 byte[] bytes = Recivefrom(out readLength);
                 if (bytes != null)
                 {
-                    string str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
+                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                    if (response.endCode == EndCode.OK)
                     {
                         return true;
                     }
                     else
                     {
-                        //MessageBox.Show("错误信息" + str);
                         return false;
                     }
                 }
@@ -214,203 +218,114 @@ namespace MELSECA1ETool
 
         public bool Write(string address, short cmd)
         {
-            int readLength;
-            bool b = sendto("WR " + address + ".S " + cmd + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    string str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show("错误信息" + str);
-                        return false;
-                    }
-                }
-            }
-            return false;
+            bool isSuccess = Write(address, (ushort)cmd);
+            return isSuccess;
         }
 
         public bool Write(string address, ushort[] cmd)
         {
-            string str = "";
             int readLength;
-            for (int i = 0; i < cmd.Length; i++)
-            {
-                str = str + " " + cmd[i];
-            }
-            //MessageBox.Show("WRS " + address + ".U " + cmd.Length + str + "\r");
-            bool b = sendto("WRS " + address + ".U " + cmd.Length + str + "\r");
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, cmd, ConnectTimeOut);
+
+            bool b = sendto(request.GetBytes());
             if (b)
             {
                 byte[] bytes = Recivefrom(out readLength);
                 if (bytes != null)
                 {
-                    str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
+                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                    if (response.endCode == EndCode.OK)
                     {
                         return true;
                     }
                     else
                     {
-                        //MessageBox.Show(str);
                         return false;
                     }
                 }
             }
-
-            return b;
+            return false;
         }
 
         public bool Write(string address, short[] cmd)
         {
-            string str = "";
             int readLength;
+            ushort[] ushorts = new ushort[cmd.Length];
             for (int i = 0; i < cmd.Length; i++)
             {
-                str = str + " " + cmd[i];
+                ushorts[i] = (ushort)cmd[i];
             }
-            //MessageBox.Show("WRS " + address + ".U " + cmd.Length + str + "\r");
-            bool b = sendto("WRS " + address + ".S " + cmd.Length + str + "\r");
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts, ConnectTimeOut);
+
+            bool b = sendto(request.GetBytes());
             if (b)
             {
                 byte[] bytes = Recivefrom(out readLength);
                 if (bytes != null)
                 {
-                    str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
+                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                    if (response.endCode == EndCode.OK)
                     {
                         return true;
                     }
                     else
                     {
-                        //MessageBox.Show(str);
                         return false;
                     }
                 }
             }
-
-            return b;
+            return false;
         }
 
         public bool Write(string address, uint cmd)
         {
-            string str = "";
-            int readLength;
-            //MessageBox.Show("WR " + address + ".D " + cmd + "\r");
-            bool b = sendto("WR " + address + ".D " + cmd + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show(str);
-                        return false;
-                    }
-                }
-            }
-            return b;
+            ushort[] ushorts = new ushort[2];
+            ushorts[0] = (ushort)(cmd & 0x0000ffff);
+            ushorts[0] = (ushort)((cmd & 0xffff0000)>>16);
+            bool v = Write(address, ushorts);
+            return v;
         }
 
         public bool Write(string address, int cmd)
         {
-            string str = "";
-            int readLength;
-            //MessageBox.Show("WRS " + address + ".U " + ushorts.Length + str + "\r");
-            bool b = sendto("WR " + address + ".L " + cmd + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show(str);
-                        return false;
-                    }
-                }
-            }
-            return b;
+            ushort[] ushorts = new ushort[2];
+            ushorts[0] = (ushort)(cmd & 0x0000ffff);
+            ushorts[0] = (ushort)((cmd & 0xffff0000) >> 16);
+            bool v = Write(address, ushorts);
+            return v;
         }
 
         public bool Write(string address, uint[] cmd)
         {
-            string cmdStr = "";
-            int readLength;
+            ushort[] ushorts = new ushort[cmd.Length * 2];
+
             for (int i = 0; i < cmd.Length; i++)
             {
-                cmdStr = cmdStr + " " + cmd[i];
+                ushorts[2 * i] = (ushort)(cmd[i] & 0x0000ffff);
+                ushorts[(2 * i) + 1] = (ushort)((cmd[i] & 0xffff0000) >> 16);
             }
-            bool b = sendto("WRS " + address + ".D " + cmd.Length + cmdStr + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    cmdStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(cmdStr))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show(cmdStr);
-                        return false;
-                    }
-                }
-            }
-            return false;
+            bool v = Write(address, ushorts);
+            return v;
         }
 
         public bool Write(string address, int[] cmd)
         {
-            string cmdStr = "";
-            int readLength;
+            ushort[] ushorts = new ushort[cmd.Length * 2];
+
             for (int i = 0; i < cmd.Length; i++)
             {
-                cmdStr = cmdStr + " " + cmd[i];
+                ushorts[2 * i] = (ushort)(cmd[i] & 0x0000ffff);
+                ushorts[(2 * i) + 1] = (ushort)((cmd[i] & 0xffff0000) >> 16);
             }
-            bool b = sendto("WRS " + address + ".L " + cmd.Length + cmdStr + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    cmdStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(cmdStr))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show(cmdStr);
-                        return false;
-                    }
-                }
-            }
-            return false;
+            bool v = Write(address, ushorts);
+            return v;
         }
 
-        public bool Write(string address, string cmd)
+        /*public bool Write(string address, string cmd)
         {
-            string str = "";
+            *//*string str = "";
             ushort[] ushorts;
             byte[] strByteArr = Encoding.ASCII.GetBytes(cmd);
             if ((strByteArr.Length % 2) == 0)
@@ -451,9 +366,9 @@ namespace MELSECA1ETool
                         return false;
                     }
                 }
-            }
+            }*//*
 
-            return b;
+            return false;
         }*/
 
         #endregion
@@ -854,6 +769,51 @@ namespace MELSECA1ETool
             this.requestData = new RequestData(addressName, addressNum, length);
         }
 
+        /// <summary>
+        /// 生成读写PLC的请求报文
+        /// </summary>
+        /// <param name="request">请求类型</param>
+        /// <param name="address">操作地址</param>
+        /// <param name="length">操作数量</param>
+        /// <param name="overTime">超时时间</param>
+        public MELSEC_A1E_Request(SubframeRequest request, string address, ushort[] value, int overTime)
+        {
+            MELSECAddressName addressName;
+            string addresstype = address.Substring(0, 1);
+            string addressNumStr = address.Substring(1);
+            int addressNum = int.Parse(addressNumStr);
+            switch (addresstype)
+            {
+                case "X":
+                case "x":
+                    addressName = MELSECAddressName.X;
+                    break;
+                /*case "Y":
+                    addressName = MELSECAddressName.Y;
+                    break;
+                case "M":
+                    addressName = MELSECAddressName.M;
+                    break;
+                case "L":
+                    addressName = MELSECAddressName.L;
+                    break;
+                case "S":
+                    addressName = MELSECAddressName.S;
+                    break;*/
+                case "D":
+                case "d":
+                    addressName = MELSECAddressName.D;
+                    break;
+                default:
+                    addressName = MELSECAddressName.D;
+                    break;
+            }
+            this.request = request;
+            this.plcNo = 0xff;
+            this.acpuWatch = 0x0c;
+            this.requestData = new RequestData(addressName, addressNum, value);
+        }
+
         #endregion
 
         public byte[] GetBytes()
@@ -897,7 +857,15 @@ namespace MELSECA1ETool
         /// </summary>
         private byte endByte;
 
+        /// <summary>
+        /// 要操作的参数
+        /// </summary>
         private byte[] value;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private ushort[] writeData;
 
         /// <summary>
         /// 请求数据总长
@@ -931,6 +899,8 @@ namespace MELSECA1ETool
             }
             this.endByte = 0x00;
 
+            value = new byte[8];
+
             outBytes = GetBytes();
             totalLength = outBytes.Length;
         }
@@ -954,15 +924,27 @@ namespace MELSECA1ETool
 
         #region 16位数据批量写入请求数据
 
-        public RequestData(MELSECAddressName addressName, int addressNum, int length, ushort[] value)
+        public RequestData(MELSECAddressName addressName, int addressNum, ushort[] value)
         {
             this.addressName = addressName;
             this.addressNum = addressNum;
-            if (length >= 256)
+
+            if (value.Length >= 256)
             {
                 this.length = 0x00;
+                this.value = new byte[8 + (256 * 2)];
             }
+            else
+            {
+                this.length = (byte)value.Length;
+                this.value = new byte[8 + (value.Length * 2)];
+            }
+
             this.endByte = 0x00;
+            this.writeData = value;
+
+            outBytes = GetBytes();
+            totalLength = outBytes.Length;
         }
 
         #endregion
@@ -973,10 +955,8 @@ namespace MELSECA1ETool
         /// <returns></returns>
         private byte[] GetBytes()
         {
-            if (value == null)
+            if (writeData == null)
             {
-                value = new byte[8];
-
                 value[0] = (byte)((addressNum & 0x000000ff));
                 value[1] = (byte)((addressNum & 0x0000ff00) >> 8);
                 value[2] = (byte)((addressNum & 0x00ff0000) >> 16);
@@ -988,6 +968,28 @@ namespace MELSECA1ETool
                 value[6] = length;
 
                 value[7] = endByte;
+            }
+            else
+            {
+                value[0] = (byte)((addressNum & 0x000000ff));
+                value[1] = (byte)((addressNum & 0x0000ff00) >> 8);
+                value[2] = (byte)((addressNum & 0x00ff0000) >> 16);
+                value[3] = (byte)((addressNum & 0xff000000) >> 24);
+
+                value[4] = (byte)(((ushort)addressName & 0x00ff));
+                value[5] = (byte)(((ushort)addressName & 0xff00) >> 8);
+
+                value[6] = length;
+
+                value[7] = endByte;
+
+                for (int i = 0; i < length; i++)
+                {
+                    //ushort tempUshort = ushort.Parse(writeData[i].ToString(), NumberStyles.HexNumber);
+                    ushort tempUshort = writeData[i];
+                    value[8 + (i * 2)] = (byte)(tempUshort & 0x00ff);
+                    value[9 + (i * 2)] = (byte)((tempUshort & 0xff00) >> 8);
+                }
             }
             return value;
         }
