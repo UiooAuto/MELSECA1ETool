@@ -24,6 +24,7 @@ namespace MELSECA1ETool
         public Form1()
         {
             InitializeComponent();
+            this.Text = "三菱MC通信协议 1E帧二进制格式 v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             CheckForIllegalCrossThreadCalls = false;
 
             /*work = new Work();
