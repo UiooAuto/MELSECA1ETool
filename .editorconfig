@@ -1,0 +1,7 @@
+﻿[*.{cs,vb}]
+
+# IDE0003: 删除限定
+dotnet_diagnostic.IDE0003.severity = none
+
+# CS1717: 对同一变量进行了赋值
+dotnet_diagnostic.CS1717.severity = none

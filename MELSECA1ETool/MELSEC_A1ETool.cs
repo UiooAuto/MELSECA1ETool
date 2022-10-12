@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace MELSECA1ETool
 {
@@ -21,6 +22,11 @@ namespace MELSECA1ETool
         int times = 3;//重连次数
         int wait = 1000;//每次重连前等待多久
 
+        /// <summary>
+        /// 创建MC协议连接对象
+        /// </summary>
+        /// <param name="serverIp">目标IP</param>
+        /// <param name="serverPort">目标端口</param>
         public MELSEC_A1ETool(string serverIp, int serverPort)
         {
             this.ipAddress = IPAddress.Parse(serverIp);
@@ -111,20 +117,18 @@ namespace MELSECA1ETool
         }
 
         #region 读写底层
-        public bool sendto(string cmd)
+        public bool sendto(byte[] cmd)
         {
             if (socket != null)
             {
                 int i;
-                if (string.IsNullOrWhiteSpace(cmd))
+                if (cmd == null)
                 {
                     return false;
                 }
-                byte[] buffer = new byte[1024 * 1024];
-                buffer = Encoding.ASCII.GetBytes(cmd + "\r\n");
                 try
                 {
-                    i = socket.Send(buffer);
+                    i = socket.Send(cmd);
                 }
                 catch
                 {
@@ -184,7 +188,7 @@ namespace MELSECA1ETool
 
         #region 写入PLC
 
-        public bool Write(string address, ushort cmd)
+        /*public bool Write(string address, ushort cmd)
         {
             int readLength;
             bool b = sendto("WR " + address + ".U " + cmd + "\r");
@@ -450,13 +454,13 @@ namespace MELSECA1ETool
             }
 
             return b;
-        }
+        }*/
 
         #endregion
 
         #region 读取PLC
 
-        private bool TryRead(string cmd, out byte[] readResult, out int getLength)
+        private bool TryRead(byte[] cmd, out byte[] readResult, out int getLength)
         {
             bool b = false;
             byte[] bytes = null;
@@ -494,8 +498,11 @@ namespace MELSECA1ETool
         /// <returns>读取的结果</returns>
         public ReadResult<ushort> ReadUInt16(string address)
         {
-            int readLength;
-            string recStr;
+            int recLength;
+            byte[] bytes = null;
+            ReadResult<ushort> result = new ReadResult<ushort>();
+            result.IsSuccess = false; //默认值为false，失败
+            /*string recStr;
             byte[] bytes = null;
             ReadResult<ushort> result = new ReadResult<ushort>();
             result.IsSuccess = false; //默认值为false，失败
@@ -509,6 +516,9 @@ namespace MELSECA1ETool
                 result.IsSuccess = true;
                 result.Content = recShort;
             }
+            return result;*/
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, 1, ConnectTimeOut);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
             return result;
         }
 
@@ -523,7 +533,7 @@ namespace MELSECA1ETool
             string recStr;
             byte[] bytes = null;
             ReadResult<short> result = new ReadResult<short>();
-            result.IsSuccess = false; //默认值为false，失败
+            /*result.IsSuccess = false; //默认值为false，失败
 
             bool isSuccess = TryRead("RD " + address + ".S\r", out bytes, out readLength);
 
@@ -533,38 +543,33 @@ namespace MELSECA1ETool
                 short recShort = short.Parse(recStr);
                 result.IsSuccess = true;
                 result.Content = recShort;
-            }
+            }*/
             return result;
         }
 
         public ReadResult<ushort[]> ReadUInt16(string address, int length)
         {
-            int readLength;
-            string recStr;
+            int recLength;
             byte[] bytes = null;
             ReadResult<ushort[]> result = new ReadResult<ushort[]>();
             result.IsSuccess = false; //默认值为false，失败
+            /*string recStr;
+            byte[] bytes = null;
+            ReadResult<ushort> result = new ReadResult<ushort>();
+            result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RDS " + address + ".U " + length + "\r", out bytes, out readLength);
+            bool isSuccess = TryRead("RD " + address + ".U\r", out bytes, out readLength);
 
             if (isSuccess)
             {
                 recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                var indexOf = recStr.IndexOf('\r');
-                if (indexOf != -1)
-                {
-                    recStr = recStr.Substring(0, indexOf);
-                }
-                char[] chars = { ' ' };
-                string[] strings = recStr.Split(chars); //按照空格分隔
-                ushort[] ushorts = new ushort[strings.Length];
-                for (int i = 0; i < strings.Length; i++)
-                {
-                    ushorts[i] = ushort.Parse(strings[i]);
-                }
+                ushort recShort = ushort.Parse(recStr);
                 result.IsSuccess = true;
-                result.Content = ushorts;
+                result.Content = recShort;
             }
+            return result;*/
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, length, ConnectTimeOut);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
             return result;
         }
 
@@ -577,7 +582,7 @@ namespace MELSECA1ETool
             ReadResult<short[]> result = new ReadResult<short[]>();
             result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RDS " + address + ".S " + length + "\r", out bytes, out readLength);
+            /*bool isSuccess = TryRead("RDS " + address + ".S " + length + "\r", out bytes, out readLength);
 
             if (isSuccess)
             {
@@ -596,7 +601,7 @@ namespace MELSECA1ETool
                 }
                 result.IsSuccess = true;
                 result.Content = shorts;
-            }
+            }*/
             return result;
         }
 
@@ -608,7 +613,7 @@ namespace MELSECA1ETool
             ReadResult<uint> result = new ReadResult<uint>();
             result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".D\r", out bytes, out readLength);
+            /*bool isSuccess = TryRead("RD " + address + ".D\r", out bytes, out readLength);
 
             if (isSuccess)
             {
@@ -616,7 +621,7 @@ namespace MELSECA1ETool
                 uint recShort = uint.Parse(recStr);
                 result.IsSuccess = true;
                 result.Content = recShort;
-            }
+            }*/
             return result;
         }
 
@@ -628,7 +633,7 @@ namespace MELSECA1ETool
             ReadResult<int> result = new ReadResult<int>();
             result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
+            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
 
             if (isSuccess)
             {
@@ -636,7 +641,7 @@ namespace MELSECA1ETool
                 int recInt = int.Parse(recStr);
                 result.IsSuccess = true;
                 result.Content = recInt;
-            }
+            }*/
             return result;
         }
 
@@ -648,7 +653,7 @@ namespace MELSECA1ETool
             ReadResult<uint[]> result = new ReadResult<uint[]>();
             result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
+            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
 
             if (isSuccess)
             {
@@ -667,7 +672,7 @@ namespace MELSECA1ETool
                 }
                 result.IsSuccess = true;
                 result.Content = uints;
-            }
+            }*/
             return result;
         }
 
@@ -679,7 +684,7 @@ namespace MELSECA1ETool
             ReadResult<int[]> result = new ReadResult<int[]>();
             result.IsSuccess = false; //默认值为false，失败
 
-            bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
+            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
 
             if (isSuccess)
             {
@@ -698,7 +703,7 @@ namespace MELSECA1ETool
                 }
                 result.IsSuccess = true;
                 result.Content = ints;
-            }
+            }*/
             return result;
         }
 
@@ -736,9 +741,265 @@ namespace MELSECA1ETool
         #endregion
     }
 
+    /// <summary>
+    /// 读取到的结果
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ReadResult<T>
     {
         public bool IsSuccess;
         public T Content;
+    }
+
+    #region 专用枚举
+
+    /// <summary>
+    /// 用于生成请求报文时指定操作类型的副帧头
+    /// </summary>
+    public enum SubframeRequest : byte
+    {
+        READBOOL = 0x00,
+        READINT16 = 0x01,
+        WRITEBOOL = 0x02,
+        WRITEINT16 = 0x03
+    }
+
+    /// <summary>
+    /// 用于处理响应报文时对照操作类型的副帧头响应
+    /// </summary>
+    public enum SubframeAck : byte
+    {
+        READBOOL = 0x80,
+        READINT16 = 0x81,
+        WRITEBOOL = 0x82,
+        WRITEINT16 = 0x83
+    }
+
+    /// <summary>
+    /// 用于生成请求报文时指定地址类型的枚举
+    /// </summary>
+    public enum MELSECAddressName : ushort
+    {
+        X = 0x5820,
+        Y = 0x5920,
+        M = 0x4D20,
+        L = 0x4D20,
+        S = 0x4D20,
+        D = 0x4420,
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 三菱MC协议请求报文
+    /// </summary>
+    public class MELSEC_A1E_Request
+    {
+        /// <summary>
+        /// 请求副帧头
+        /// </summary>
+        private SubframeRequest request;
+        /// <summary>
+        /// plc编号，一般默认为FF
+        /// </summary>
+        private byte plcNo;
+        /// <summary>
+        /// ACPU监视定时器
+        /// • 0000H(0): 无限等待(处理完成之前继续等待。)
+        /// • 0001H～FFFFH(1～65535) : 等待时间(单位: 250ms)
+        /// 为了正常进行数据通信，建议根据通信目标在下表的设置范围内进行使用。
+        /// 连接站(本站)监视定时器的建议值为1H～28H(0.25秒～10秒)
+        /// </summary>
+        private ushort acpuWatch;
+        /// <summary>
+        /// 请求数据
+        /// </summary>
+        private RequestData requestData;
+
+        #region 读请求生成
+
+        /// <summary>
+        /// 生成读写PLC的请求报文
+        /// </summary>
+        /// <param name="request">请求类型</param>
+        /// <param name="address">操作地址</param>
+        /// <param name="length">操作数量</param>
+        /// <param name="overTime">超时时间</param>
+        public MELSEC_A1E_Request(SubframeRequest request, string address, int length,int overTime)
+        {
+            MELSECAddressName addressName;
+            string addresstype = address.Substring(0, 1);
+            string addressNumStr = address.Substring(1);
+            int addressNum = int.Parse(addressNumStr);
+            switch (addresstype)
+            {
+                case "X":
+                case "x":
+                    addressName = MELSECAddressName.X;
+                    break;
+                /*case "Y":
+                    addressName = MELSECAddressName.Y;
+                    break;
+                case "M":
+                    addressName = MELSECAddressName.M;
+                    break;
+                case "L":
+                    addressName = MELSECAddressName.L;
+                    break;
+                case "S":
+                    addressName = MELSECAddressName.S;
+                    break;*/
+                case "D":
+                case "d":
+                    addressName = MELSECAddressName.D;
+                    break;
+                default:
+                    addressName = MELSECAddressName.D;
+                    break;
+            }
+            this.request = request;
+            this.plcNo = 0xff;
+            this.acpuWatch = 0x0c;
+            this.requestData = new RequestData(addressName, addressNum, length);
+        }
+
+        #endregion
+
+        public byte[] GetBytes()
+        {
+            List<byte> byteList = new List<byte>();
+
+            byteList.Add((byte)request);
+            byteList.Add(plcNo);
+            byteList.Add((byte)((acpuWatch & 0x0f)));
+            byteList.Add((byte)((acpuWatch & 0xf0) >> 8));
+            for (int i = 0; i < requestData.totalLength; i++)
+            {
+                byteList.Add(requestData.outBytes[i]);
+            }
+            return byteList.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// 三菱MC协议1E帧的请求数据
+    /// </summary>
+    public class RequestData
+    {
+        /// <summary>
+        /// 指定地址类型
+        /// </summary>
+        private MELSECAddressName addressName;
+
+        /// <summary>
+        /// 地址编号
+        /// </summary>
+        private int addressNum;
+
+        /// <summary>
+        /// 指定批量操作的数量
+        /// </summary>
+        private byte length;
+
+        /// <summary>
+        /// 固定值
+        /// </summary>
+        private byte endByte;
+
+        private byte[] value;
+
+        /// <summary>
+        /// 请求数据总长
+        /// </summary>
+        public int totalLength;
+
+        /// <summary>
+        /// 用于输出的字节数组
+        /// </summary>
+        public byte[] outBytes;
+
+        #region 批量读取请求数据
+
+        /// <summary>
+        /// 批量读取请求数据
+        /// </summary>
+        /// <param name="addresstype">地址类型(X、D)</param>
+        /// <param name="addressNum">地址编号</param>
+        /// <param name="length">读取长度</param>
+        public RequestData(MELSECAddressName addressName, int addressNum, int length)
+        {
+            this.addressName = addressName;
+            this.addressNum = addressNum;
+            if (length >= 256)
+            {
+                this.length = 0x00;
+            }
+            else
+            {
+                this.length = (byte)length;
+            }
+            this.endByte = 0x00;
+
+            outBytes = GetBytes();
+            totalLength = outBytes.Length;
+        }
+
+        #endregion
+
+        #region bool数据批量写入请求数据
+
+        /*public RequestData(MELSECAddressName addressName, int addressNum, int length, bool[] value)
+        {
+            this.addressName = addressName;
+            this.addressNum = addressNum;
+            if (length >= 256)
+            {
+                this.length = 0x00;
+            }
+            this.endByte = 0x00;
+        }*/
+
+        #endregion
+
+        #region 16位数据批量写入请求数据
+
+        public RequestData(MELSECAddressName addressName, int addressNum, int length, ushort[] value)
+        {
+            this.addressName = addressName;
+            this.addressNum = addressNum;
+            if (length >= 256)
+            {
+                this.length = 0x00;
+            }
+            this.endByte = 0x00;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 获取对应的请求数据数组
+        /// </summary>
+        /// <returns></returns>
+        private byte[] GetBytes()
+        {
+            if (value == null)
+            {
+                value = new byte[8];
+
+                value[0] = (byte)((addressNum & 0x000000ff));
+                value[1] = (byte)((addressNum & 0x0000ff00) >> 8);
+                value[2] = (byte)((addressNum & 0x00ff0000) >> 16);
+                value[3] = (byte)((addressNum & 0xff000000) >> 24);
+
+                value[4] = (byte)(((ushort)addressName & 0x00ff));
+                value[5] = (byte)(((ushort)addressName & 0xff00) >> 8);
+
+                value[6] = length;
+
+                value[7] = endByte;
+            }
+            return value;
+        }
+
     }
 }
