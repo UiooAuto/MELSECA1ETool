@@ -537,21 +537,16 @@ namespace MELSECA1ETool
         /// <returns>读取的结果</returns>
         public ReadResult<short> ReadInt16(string address)
         {
-            int readLength;
-            string recStr;
-            byte[] bytes = null;
             ReadResult<short> result = new ReadResult<short>();
-            /*result.IsSuccess = false; //默认值为false，失败
-
-            bool isSuccess = TryRead("RD " + address + ".S\r", out bytes, out readLength);
-
-            if (isSuccess)
+            ReadResult<ushort> readResult = ReadUInt16(address);
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                short recShort = short.Parse(recStr);
-                result.IsSuccess = true;
-                result.Content = recShort;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = (short)readResult.Content;
             return result;
         }
 
@@ -595,135 +590,99 @@ namespace MELSECA1ETool
 
         public ReadResult<short[]> ReadInt16(string address, int length)
         {
-            int readLength = 0;
-            string recStr;
-            bool b = false;
-            byte[] bytes = null;
             ReadResult<short[]> result = new ReadResult<short[]>();
-            result.IsSuccess = false; //默认值为false，失败
-
-            /*bool isSuccess = TryRead("RDS " + address + ".S " + length + "\r", out bytes, out readLength);
-
-            if (isSuccess)
+            ReadResult<ushort[]> readResult = ReadUInt16(address, length);
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                var indexOf = recStr.IndexOf('\r');
-                if (indexOf != -1)
-                {
-                    recStr = recStr.Substring(0, indexOf);
-                }
-                char[] chars = { ' ' };
-                string[] strings = recStr.Split(chars); //按照空格分隔
-                short[] shorts = new short[length];
-                for (int i = 0; i < strings.Length; i++)
-                {
-                    shorts[i] = short.Parse(strings[i]);
-                }
-                result.IsSuccess = true;
-                result.Content = shorts;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = new short[length];
+            for (int i = 0; i < result.Content.Length; i++)
+            {
+                result.Content[i] = (short)readResult.Content[i];
+            }
             return result;
         }
 
         public ReadResult<uint> ReadUInt32(string address)
         {
-            int readLength;
-            string recStr;
-            byte[] bytes = null;
             ReadResult<uint> result = new ReadResult<uint>();
-            result.IsSuccess = false; //默认值为false，失败
+            ReadResult<ushort[]> readResult = ReadUInt16(address, 2);
 
-            /*bool isSuccess = TryRead("RD " + address + ".D\r", out bytes, out readLength);
-
-            if (isSuccess)
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                uint recShort = uint.Parse(recStr);
-                result.IsSuccess = true;
-                result.Content = recShort;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = readResult.Content[1];
+            result.Content = result.Content << 16;
+            result.Content = result.Content | readResult.Content[0];
+
             return result;
         }
 
         public ReadResult<int> ReadInt32(string address)
         {
-            int readLength;
-            string recStr;
-            byte[] bytes = null;
             ReadResult<int> result = new ReadResult<int>();
-            result.IsSuccess = false; //默认值为false，失败
+            ReadResult<uint> readResult = ReadUInt32(address);
 
-            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
-
-            if (isSuccess)
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                int recInt = int.Parse(recStr);
-                result.IsSuccess = true;
-                result.Content = recInt;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = (int)readResult.Content;
+
             return result;
         }
 
         public ReadResult<uint[]> ReadUInt32(string address, int length)
         {
-            int readLength;
-            string recStr;
-            byte[] bytes = null;
             ReadResult<uint[]> result = new ReadResult<uint[]>();
-            result.IsSuccess = false; //默认值为false，失败
+            ReadResult<ushort[]> readResult = ReadUInt16(address, length * 2);
 
-            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
-
-            if (isSuccess)
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                var indexOf = recStr.IndexOf('\r');
-                if (indexOf != -1)
-                {
-                    recStr = recStr.Substring(0, indexOf);
-                }
-                char[] chars = { ' ' };
-                string[] strings = recStr.Split(chars); //按照空格分隔
-                uint[] uints = new uint[strings.Length];
-                for (int i = 0; i < strings.Length; i++)
-                {
-                    uints[i] = uint.Parse(strings[i]);
-                }
-                result.IsSuccess = true;
-                result.Content = uints;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = new uint[length];
+            for (int i = 0; i < length; i++)
+            {
+                result.Content[i] = readResult.Content[(i * 2) + 1];
+                result.Content[i] = result.Content[i] << 16;
+                result.Content[i] = result.Content[i] | readResult.Content[i * 2];
+            }
+
             return result;
         }
 
         public ReadResult<int[]> ReadInt32(string address, int length)
         {
-            int readLength;
-            string recStr;
-            byte[] bytes = null;
             ReadResult<int[]> result = new ReadResult<int[]>();
-            result.IsSuccess = false; //默认值为false，失败
+            ReadResult<uint[]> readResult = ReadUInt32(address, length);
 
-            /*bool isSuccess = TryRead("RD " + address + ".L\r", out bytes, out readLength);
-
-            if (isSuccess)
+            result.IsSuccess = readResult.IsSuccess;
+            if (!readResult.IsSuccess)
             {
-                recStr = Encoding.ASCII.GetString(bytes, 0, readLength);
-                var indexOf = recStr.IndexOf('\r');
-                if (indexOf != -1)
-                {
-                    recStr = recStr.Substring(0, indexOf);
-                }
-                char[] chars = { ' ' };
-                string[] strings = recStr.Split(chars); //按照空格分隔
-                int[] ints = new int[strings.Length];
-                for (int i = 0; i < strings.Length; i++)
-                {
-                    ints[i] = int.Parse(strings[i]);
-                }
-                result.IsSuccess = true;
-                result.Content = ints;
-            }*/
+                result.errorCode = readResult.errorCode;
+                return result;
+            }
+
+            result.Content = new int[length];
+            for (int i = 0; i < length; i++)
+            {
+                result.Content[i] = (int)readResult.Content[i];
+            }
             return result;
         }
 

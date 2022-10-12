@@ -70,7 +70,7 @@
             this.listBox2.HorizontalScrollbar = true;
             this.listBox2.ItemHeight = 18;
             this.listBox2.Location = new System.Drawing.Point(1218, 48);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBox2.Margin = new System.Windows.Forms.Padding(4);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(343, 850);
             this.listBox2.TabIndex = 78;
@@ -78,7 +78,7 @@
             // btn_CheckConnect
             // 
             this.btn_CheckConnect.Location = new System.Drawing.Point(711, 87);
-            this.btn_CheckConnect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_CheckConnect.Margin = new System.Windows.Forms.Padding(4);
             this.btn_CheckConnect.Name = "btn_CheckConnect";
             this.btn_CheckConnect.Size = new System.Drawing.Size(140, 34);
             this.btn_CheckConnect.TabIndex = 77;
@@ -89,7 +89,7 @@
             // btn_StopThreadRead
             // 
             this.btn_StopThreadRead.Location = new System.Drawing.Point(711, 536);
-            this.btn_StopThreadRead.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_StopThreadRead.Margin = new System.Windows.Forms.Padding(4);
             this.btn_StopThreadRead.Name = "btn_StopThreadRead";
             this.btn_StopThreadRead.Size = new System.Drawing.Size(140, 34);
             this.btn_StopThreadRead.TabIndex = 76;
@@ -101,7 +101,7 @@
             // 
             this.cb_ThreadReadOpen.AutoSize = true;
             this.cb_ThreadReadOpen.Location = new System.Drawing.Point(612, 542);
-            this.cb_ThreadReadOpen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cb_ThreadReadOpen.Margin = new System.Windows.Forms.Padding(4);
             this.cb_ThreadReadOpen.Name = "cb_ThreadReadOpen";
             this.cb_ThreadReadOpen.Size = new System.Drawing.Size(88, 22);
             this.cb_ThreadReadOpen.TabIndex = 75;
@@ -123,7 +123,7 @@
             // 
             this.cb_IsNotUDWord.AutoSize = true;
             this.cb_IsNotUDWord.Location = new System.Drawing.Point(400, 414);
-            this.cb_IsNotUDWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cb_IsNotUDWord.Margin = new System.Windows.Forms.Padding(4);
             this.cb_IsNotUDWord.Name = "cb_IsNotUDWord";
             this.cb_IsNotUDWord.Size = new System.Drawing.Size(88, 22);
             this.cb_IsNotUDWord.TabIndex = 73;
@@ -135,7 +135,7 @@
             // 
             this.cb_IsNotUWord.AutoSize = true;
             this.cb_IsNotUWord.Location = new System.Drawing.Point(400, 288);
-            this.cb_IsNotUWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cb_IsNotUWord.Margin = new System.Windows.Forms.Padding(4);
             this.cb_IsNotUWord.Name = "cb_IsNotUWord";
             this.cb_IsNotUWord.Size = new System.Drawing.Size(88, 22);
             this.cb_IsNotUWord.TabIndex = 72;
@@ -195,9 +195,8 @@
             // 
             // btn_WriteDWord
             // 
-            this.btn_WriteDWord.Enabled = false;
             this.btn_WriteDWord.Location = new System.Drawing.Point(711, 466);
-            this.btn_WriteDWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_WriteDWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteDWord.Name = "btn_WriteDWord";
             this.btn_WriteDWord.Size = new System.Drawing.Size(140, 34);
             this.btn_WriteDWord.TabIndex = 64;
@@ -207,9 +206,8 @@
             // 
             // btn_ReadDWord
             // 
-            this.btn_ReadDWord.Enabled = false;
             this.btn_ReadDWord.Location = new System.Drawing.Point(711, 410);
-            this.btn_ReadDWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_ReadDWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadDWord.Name = "btn_ReadDWord";
             this.btn_ReadDWord.Size = new System.Drawing.Size(140, 34);
             this.btn_ReadDWord.TabIndex = 63;
@@ -220,7 +218,7 @@
             // tb_WriteDWordValue
             // 
             this.tb_WriteDWordValue.Location = new System.Drawing.Point(214, 466);
-            this.tb_WriteDWordValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteDWordValue.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteDWordValue.Name = "tb_WriteDWordValue";
             this.tb_WriteDWordValue.Size = new System.Drawing.Size(466, 28);
             this.tb_WriteDWordValue.TabIndex = 62;
@@ -228,7 +226,7 @@
             // tb_WriteDWordAddress
             // 
             this.tb_WriteDWordAddress.Location = new System.Drawing.Point(30, 466);
-            this.tb_WriteDWordAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteDWordAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteDWordAddress.Name = "tb_WriteDWordAddress";
             this.tb_WriteDWordAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_WriteDWordAddress.TabIndex = 61;
@@ -237,7 +235,7 @@
             // tb_ReadDWordLength
             // 
             this.tb_ReadDWordLength.Location = new System.Drawing.Point(214, 410);
-            this.tb_ReadDWordLength.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadDWordLength.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadDWordLength.Name = "tb_ReadDWordLength";
             this.tb_ReadDWordLength.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadDWordLength.TabIndex = 60;
@@ -245,7 +243,7 @@
             // tb_ReadDWordAddress
             // 
             this.tb_ReadDWordAddress.Location = new System.Drawing.Point(30, 410);
-            this.tb_ReadDWordAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadDWordAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadDWordAddress.Name = "tb_ReadDWordAddress";
             this.tb_ReadDWordAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadDWordAddress.TabIndex = 59;
@@ -257,7 +255,7 @@
             this.listBox1.HorizontalScrollbar = true;
             this.listBox1.ItemHeight = 18;
             this.listBox1.Location = new System.Drawing.Point(864, 48);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(343, 850);
             this.listBox1.TabIndex = 58;
@@ -265,7 +263,7 @@
             // btn_WriteWord
             // 
             this.btn_WriteWord.Location = new System.Drawing.Point(711, 340);
-            this.btn_WriteWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_WriteWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteWord.Name = "btn_WriteWord";
             this.btn_WriteWord.Size = new System.Drawing.Size(140, 34);
             this.btn_WriteWord.TabIndex = 57;
@@ -276,7 +274,7 @@
             // btn_WriteBool
             // 
             this.btn_WriteBool.Location = new System.Drawing.Point(711, 206);
-            this.btn_WriteBool.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_WriteBool.Margin = new System.Windows.Forms.Padding(4);
             this.btn_WriteBool.Name = "btn_WriteBool";
             this.btn_WriteBool.Size = new System.Drawing.Size(140, 34);
             this.btn_WriteBool.TabIndex = 56;
@@ -287,7 +285,7 @@
             // btn_ReadWord
             // 
             this.btn_ReadWord.Location = new System.Drawing.Point(711, 284);
-            this.btn_ReadWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_ReadWord.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadWord.Name = "btn_ReadWord";
             this.btn_ReadWord.Size = new System.Drawing.Size(140, 34);
             this.btn_ReadWord.TabIndex = 55;
@@ -298,7 +296,7 @@
             // tb_WriteWordValue
             // 
             this.tb_WriteWordValue.Location = new System.Drawing.Point(214, 340);
-            this.tb_WriteWordValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteWordValue.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteWordValue.Name = "tb_WriteWordValue";
             this.tb_WriteWordValue.Size = new System.Drawing.Size(466, 28);
             this.tb_WriteWordValue.TabIndex = 54;
@@ -306,7 +304,7 @@
             // tb_WriteWordAddress
             // 
             this.tb_WriteWordAddress.Location = new System.Drawing.Point(30, 340);
-            this.tb_WriteWordAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteWordAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteWordAddress.Name = "tb_WriteWordAddress";
             this.tb_WriteWordAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_WriteWordAddress.TabIndex = 53;
@@ -315,7 +313,7 @@
             // tb_WriteBoolValue
             // 
             this.tb_WriteBoolValue.Location = new System.Drawing.Point(214, 206);
-            this.tb_WriteBoolValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteBoolValue.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteBoolValue.Name = "tb_WriteBoolValue";
             this.tb_WriteBoolValue.Size = new System.Drawing.Size(466, 28);
             this.tb_WriteBoolValue.TabIndex = 52;
@@ -323,7 +321,7 @@
             // tb_WriteBoolAddress
             // 
             this.tb_WriteBoolAddress.Location = new System.Drawing.Point(30, 206);
-            this.tb_WriteBoolAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_WriteBoolAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_WriteBoolAddress.Name = "tb_WriteBoolAddress";
             this.tb_WriteBoolAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_WriteBoolAddress.TabIndex = 51;
@@ -332,7 +330,7 @@
             // tb_ReadWordLength
             // 
             this.tb_ReadWordLength.Location = new System.Drawing.Point(214, 284);
-            this.tb_ReadWordLength.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadWordLength.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadWordLength.Name = "tb_ReadWordLength";
             this.tb_ReadWordLength.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadWordLength.TabIndex = 50;
@@ -340,7 +338,7 @@
             // tb_ReadWordAddress
             // 
             this.tb_ReadWordAddress.Location = new System.Drawing.Point(30, 284);
-            this.tb_ReadWordAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadWordAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadWordAddress.Name = "tb_ReadWordAddress";
             this.tb_ReadWordAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadWordAddress.TabIndex = 49;
@@ -350,7 +348,7 @@
             // 
             this.tb_ReadBoolLength.Enabled = false;
             this.tb_ReadBoolLength.Location = new System.Drawing.Point(214, 148);
-            this.tb_ReadBoolLength.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadBoolLength.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadBoolLength.Name = "tb_ReadBoolLength";
             this.tb_ReadBoolLength.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadBoolLength.TabIndex = 48;
@@ -358,7 +356,7 @@
             // tb_ReadBoolAddress
             // 
             this.tb_ReadBoolAddress.Location = new System.Drawing.Point(30, 148);
-            this.tb_ReadBoolAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ReadBoolAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ReadBoolAddress.Name = "tb_ReadBoolAddress";
             this.tb_ReadBoolAddress.Size = new System.Drawing.Size(148, 28);
             this.tb_ReadBoolAddress.TabIndex = 47;
@@ -367,7 +365,7 @@
             // tb_port
             // 
             this.tb_port.Location = new System.Drawing.Point(214, 51);
-            this.tb_port.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_port.Margin = new System.Windows.Forms.Padding(4);
             this.tb_port.Name = "tb_port";
             this.tb_port.Size = new System.Drawing.Size(148, 28);
             this.tb_port.TabIndex = 46;
@@ -376,7 +374,7 @@
             // tb_ip
             // 
             this.tb_ip.Location = new System.Drawing.Point(30, 51);
-            this.tb_ip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_ip.Margin = new System.Windows.Forms.Padding(4);
             this.tb_ip.Name = "tb_ip";
             this.tb_ip.Size = new System.Drawing.Size(148, 28);
             this.tb_ip.TabIndex = 45;
@@ -385,7 +383,7 @@
             // btn_ReadBool
             // 
             this.btn_ReadBool.Location = new System.Drawing.Point(711, 148);
-            this.btn_ReadBool.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_ReadBool.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReadBool.Name = "btn_ReadBool";
             this.btn_ReadBool.Size = new System.Drawing.Size(140, 34);
             this.btn_ReadBool.TabIndex = 44;
@@ -396,7 +394,7 @@
             // connect
             // 
             this.connect.Location = new System.Drawing.Point(711, 48);
-            this.connect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.connect.Margin = new System.Windows.Forms.Padding(4);
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(140, 34);
             this.connect.TabIndex = 43;
@@ -443,7 +441,7 @@
             this.Controls.Add(this.tb_ip);
             this.Controls.Add(this.btn_ReadBool);
             this.Controls.Add(this.connect);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
