@@ -283,7 +283,7 @@ namespace MELSECA1ETool
         {
             ushort[] ushorts = new ushort[2];
             ushorts[0] = (ushort)(cmd & 0x0000ffff);
-            ushorts[0] = (ushort)((cmd & 0xffff0000)>>16);
+            ushorts[1] = (ushort)((cmd & 0xffff0000)>>16);
             bool v = Write(address, ushorts);
             return v;
         }
@@ -292,7 +292,7 @@ namespace MELSECA1ETool
         {
             ushort[] ushorts = new ushort[2];
             ushorts[0] = (ushort)(cmd & 0x0000ffff);
-            ushorts[0] = (ushort)((cmd & 0xffff0000) >> 16);
+            ushorts[1] = (ushort)((cmd & 0xffff0000) >> 16);
             bool v = Write(address, ushorts);
             return v;
         }
