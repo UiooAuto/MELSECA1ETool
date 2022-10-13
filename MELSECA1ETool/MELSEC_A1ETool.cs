@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace MELSECA1ETool
 {
-    internal class MELSEC_A1ETool
+    public class MELSEC_A1ETool
     {
         public Socket socket;
         public IPAddress ipAddress;
