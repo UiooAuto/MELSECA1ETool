@@ -22,6 +22,7 @@ namespace MELSECA1ETool
         public Ping ping;
         int times = 3;//重连次数
         int wait = 1000;//每次重连前等待多久
+        static object lock1;
 
         /// <summary>
         /// 创建MC协议连接对象
@@ -118,7 +119,7 @@ namespace MELSECA1ETool
         }
 
         #region 读写底层
-        public bool sendto(byte[] cmd)
+        public bool Sendto(byte[] cmd)
         {
             if (socket != null)
             {
@@ -184,6 +185,56 @@ namespace MELSECA1ETool
 
         }
 
+        /*public byte[] SendAndRecivefrom(byte[] cmd, out bool ok)
+        {
+            byte[] recBytes = new byte[1024 * 1024];
+            bool sendOK = Sendto(cmd);
+            if (sendOK)
+            {
+                int revNum = socket.Receive(recBytes);
+                if (revNum == 0)
+                {
+                    ok = false;
+                }
+                else
+                {
+                    ok = true;
+                }
+            }
+            else
+            {
+                ok = false;
+            }
+            return recBytes;
+        }*/
+
+        /// <summary>
+        /// 与服务器发起一次交互
+        /// </summary>
+        /// <param name="cmd">发送给服务器的命令</param>
+        /// <returns>从服务器接收到的返回数据</returns>
+        public byte[] SendAndRecivefrom(byte[] cmd)
+        {
+            byte[] recBytes = new byte[1024 * 1024];
+            bool sendOK = Sendto(cmd);
+            if (sendOK)
+            {
+                int revNum = socket.Receive(recBytes);
+                if (revNum == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return recBytes;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         #endregion
 
 
@@ -195,22 +246,19 @@ namespace MELSECA1ETool
             ushort[] ushorts = new ushort[] { cmd };
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts, ConnectTimeOut);
 
-            bool b = sendto(request.GetBytes());
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+            byte[] bytes = SendAndRecivefrom(request.GetBytes());
 
-                    if (response.endCode == EndCode.OK)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+            if (bytes != null)
+            {
+                MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                if (response.endCode == EndCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             return false;
@@ -227,22 +275,19 @@ namespace MELSECA1ETool
             int readLength;
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, cmd, ConnectTimeOut);
 
-            bool b = sendto(request.GetBytes());
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+            byte[] bytes = SendAndRecivefrom(request.GetBytes());
 
-                    if (response.endCode == EndCode.OK)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+            if (bytes != null)
+            {
+                MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                if (response.endCode == EndCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             return false;
@@ -250,33 +295,15 @@ namespace MELSECA1ETool
 
         public bool Write(string address, short[] cmd)
         {
-            int readLength;
             ushort[] ushorts = new ushort[cmd.Length];
             for (int i = 0; i < cmd.Length; i++)
             {
                 ushorts[i] = (ushort)cmd[i];
             }
-            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts, ConnectTimeOut);
 
-            bool b = sendto(request.GetBytes());
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+            bool isSuccess = Write(address, ushorts);
 
-                    if (response.endCode == EndCode.OK)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            return false;
+            return isSuccess;
         }
 
         public bool Write(string address, uint cmd)
@@ -375,19 +402,15 @@ namespace MELSECA1ETool
 
         #region 读取PLC
 
-        private bool TryRead(byte[] cmd, out byte[] readResult, out int getLength)
+        private bool TryRead(byte[] cmd, out byte[] readResult)
         {
-            bool b = false;
             byte[] bytes = null;
             bool loop = true;
-            int readLength = 0;
             while (loop)
             {
-                b = false;
-                bytes = null;
-                b = sendto(cmd);
-                bytes = Recivefrom(out readLength);
-                if (b && bytes != null)
+                bytes = SendAndRecivefrom(cmd);
+
+                if (bytes != null)
                 {
                     loop = false;
                 }
@@ -395,13 +418,11 @@ namespace MELSECA1ETool
                 {
                     if (!ReConnect())
                     {
-                        getLength = 0;
                         readResult = null;
                         return false;
                     }
                 }
             }
-            getLength = readLength;
             readResult = bytes;
             return true;
         }
@@ -419,7 +440,7 @@ namespace MELSECA1ETool
             result.IsSuccess = false; //默认值为false，失败
 
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, 1, ConnectTimeOut);
-            bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes);
 
             //如果Socket通信失败，则返回失败
             if (!isSuccess)
@@ -473,7 +494,7 @@ namespace MELSECA1ETool
             result.IsSuccess = false; //默认值为false，失败
 
             MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, length, ConnectTimeOut);
-            bool isSuccess = TryRead(request.GetBytes(), out bytes, out recLength);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes);
 
             //如果Socket通信失败，则返回失败
             if (!isSuccess)
