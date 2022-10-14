@@ -22,7 +22,7 @@ namespace MELSECA1ETool
         public Ping ping;
         int times = 3;//重连次数
         int wait = 1000;//每次重连前等待多久
-        static object lock1;
+        static object lock1 = new object();
 
         /// <summary>
         /// 创建MC协议连接对象
@@ -215,24 +215,27 @@ namespace MELSECA1ETool
         /// <returns>从服务器接收到的返回数据</returns>
         public byte[] SendAndRecivefrom(byte[] cmd)
         {
-            byte[] recBytes = new byte[1024 * 1024];
-            bool sendOK = Sendto(cmd);
-            if (sendOK)
+            lock (lock1)
             {
-                int revNum = socket.Receive(recBytes);
-                if (revNum == 0)
+                byte[] recBytes = new byte[1024 * 1024];
+                bool sendOK = Sendto(cmd);
+                if (sendOK)
                 {
-                    return null;
+                    int revNum = socket.Receive(recBytes);
+                    if (revNum == 0)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return recBytes;
+                    }
                 }
                 else
                 {
-                    return recBytes;
+                    return null;
                 }
-            }
-            else
-            {
-                return null;
-            }
+            }            
         }
 
         #endregion

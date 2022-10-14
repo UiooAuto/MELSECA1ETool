@@ -79,13 +79,13 @@ namespace MELSECA1ETool
         public void Show1(string str)
         {
             listBox1.Items.Add(DateTime.Now.ToString("HH:mm:ss.fff") + "- " + str);
-            //listBox1.SelectedIndex = listBox1.Items.Count - 1;
+            listBox1.SelectedIndex = listBox1.Items.Count - 1;
         }
 
         public void Show2(string str)
         {
             listBox2.Items.Add(DateTime.Now.ToString("HH:mm:ss.fff") + "- " + str);
-            //listBox2.SelectedIndex = listBox2.Items.Count - 1;
+            listBox2.SelectedIndex = listBox2.Items.Count - 1;
         }
 
         private void connect_Click(object sender, EventArgs e)
@@ -160,6 +160,10 @@ namespace MELSECA1ETool
                     readThread2.Start();
                     return;
                 }
+                if (cb_DoubleThreadTest.Checked)
+                {
+
+                }
 
                 if (cb_IsNotUWord.Checked)
                 {
@@ -233,7 +237,7 @@ namespace MELSECA1ETool
                     {
                         Thread.Sleep(1);
                     }
-                    Show2(v);
+                    Show1("t1-" + v);
                 }
                 else
                 {
@@ -246,7 +250,7 @@ namespace MELSECA1ETool
         {
             while (true)
             {
-                ReadResult<Int16[]> readResult = plc1.ReadInt16(tb_ReadWordAddress.Text, (UInt16)int.Parse(tb_ReadWordLength.Text));
+                ReadResult<Int16[]> readResult = plc1.ReadInt16("D200", 4);
                 if (readResult.IsSuccess)
                 {
                     /*if (null == readResult.Content || 0 == readResult.Content.Length)
@@ -258,7 +262,7 @@ namespace MELSECA1ETool
                     {
                         Thread.Sleep(1);
                     }
-                    Show2(v);
+                    Show2("t2-" + v);
                 }
                 else
                 {
@@ -591,6 +595,22 @@ namespace MELSECA1ETool
             btn_WriteDWord.Enabled = true;
             btn_ReadString.Enabled = false;
             btn_WriteString.Enabled = false;
+        }
+
+        private void cb_DoubleThreadTest_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_DoubleThreadTest.Checked == true)
+            {
+                cb_ThreadReadOpen.Checked = false;
+            }
+        }
+
+        private void cb_ThreadReadOpen_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_ThreadReadOpen.Checked == true)
+            {
+                cb_DoubleThreadTest.Checked = false;
+            }
         }
     }
 }
