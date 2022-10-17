@@ -215,13 +215,14 @@ namespace MELSECA1ETool
         /// <returns>从服务器接收到的返回数据</returns>
         public byte[] SendAndRecivefrom(byte[] cmd)
         {
+            int revNum = 0;
             lock (lock1)
             {
                 byte[] recBytes = new byte[1024 * 1024];
                 bool sendOK = Sendto(cmd);
                 if (sendOK)
                 {
-                    int revNum = socket.Receive(recBytes);
+                    recBytes = Recivefrom(out revNum);
                     if (revNum == 0)
                     {
                         return null;
