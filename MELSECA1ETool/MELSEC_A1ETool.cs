@@ -20,7 +20,8 @@ namespace MELSECA1ETool
         public IPEndPoint ipEndPoint;
         public int ConnectTimeOut = 1000;
         public Ping ping;
-        int times = 3;//重连次数
+        int onceReconnectTimes = 3;
+        int times;//重连次数
         int wait = 1000;//每次重连前等待多久
         static object lock1 = new object();
 
@@ -73,6 +74,7 @@ namespace MELSECA1ETool
                     this.socket.SendTimeout = ConnectTimeOut;
                     this.socket.ReceiveTimeout = ConnectTimeOut;
                     this.socket.Connect(this.ipEndPoint);
+                    times = onceReconnectTimes;
                 }
                 else
                 {
