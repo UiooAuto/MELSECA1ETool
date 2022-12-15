@@ -12,7 +12,8 @@ using System.Globalization;
 
 namespace MELSECA1ETool
 {
-    public class MELSEC_A1ETool
+    public class MELSEC_A1ETool : IDisposable
+
     {
         public Socket socket;
         public IPAddress ipAddress;
@@ -20,8 +21,7 @@ namespace MELSECA1ETool
         public IPEndPoint ipEndPoint;
         public int ConnectTimeOut = 1000;
         public Ping ping;
-        int onceReconnectTimes = 3;
-        int times;//重连次数
+        int times = 3;//重连次数
         int wait = 1000;//每次重连前等待多久
         static object lock1 = new object();
 
@@ -74,7 +74,6 @@ namespace MELSECA1ETool
                     this.socket.SendTimeout = ConnectTimeOut;
                     this.socket.ReceiveTimeout = ConnectTimeOut;
                     this.socket.Connect(this.ipEndPoint);
-                    times = onceReconnectTimes;
                 }
                 else
                 {
@@ -112,8 +111,8 @@ namespace MELSECA1ETool
             }
             try
             {
-                ((IDisposable)this).Dispose();
                 ping.Dispose();
+                ((IDisposable)this).Dispose();
             }
             catch
             {
@@ -187,29 +186,6 @@ namespace MELSECA1ETool
 
         }
 
-        /*public byte[] SendAndRecivefrom(byte[] cmd, out bool ok)
-        {
-            byte[] recBytes = new byte[1024 * 1024];
-            bool sendOK = Sendto(cmd);
-            if (sendOK)
-            {
-                int revNum = socket.Receive(recBytes);
-                if (revNum == 0)
-                {
-                    ok = false;
-                }
-                else
-                {
-                    ok = true;
-                }
-            }
-            else
-            {
-                ok = false;
-            }
-            return recBytes;
-        }*/
-
         /// <summary>
         /// 与服务器发起一次交互
         /// </summary>
@@ -238,7 +214,7 @@ namespace MELSECA1ETool
                 {
                     return null;
                 }
-            }            
+            }
         }
 
         #endregion
@@ -316,7 +292,7 @@ namespace MELSECA1ETool
         {
             ushort[] ushorts = new ushort[2];
             ushorts[0] = (ushort)(cmd & 0x0000ffff);
-            ushorts[1] = (ushort)((cmd & 0xffff0000)>>16);
+            ushorts[1] = (ushort)((cmd & 0xffff0000) >> 16);
             bool v = Write(address, ushorts);
             return v;
         }
@@ -356,9 +332,8 @@ namespace MELSECA1ETool
             return v;
         }
 
-        /*public bool Write(string address, string cmd)
+        public bool Write(string address, string cmd)
         {
-            *//*string str = "";
             ushort[] ushorts;
             byte[] strByteArr = Encoding.ASCII.GetBytes(cmd);
             if ((strByteArr.Length % 2) == 0)
@@ -375,34 +350,14 @@ namespace MELSECA1ETool
             {
                 ushorts[i] = 0x0000;
                 ushorts[i] = (ushort)(ushorts[i] | strByteArr[i * 2]);
-                ushorts[i] = (ushort)(ushorts[i] << 8);
                 if (strByteArr.Length > (i * 2) + 1)
                 {
-                    ushorts[i] = (ushort)(ushorts[i] | strByteArr[(i * 2) + 1]);
+                    ushorts[i] = (ushort)(ushorts[i] | (ushort)(strByteArr[(i * 2) + 1] << 8));
                 }
-
-                str = str + " " + ushorts[i];
             }
-            bool b = sendto("WRS " + address + ".U " + ushorts.Length + str + "\r");
-            if (b)
-            {
-                byte[] bytes = Recivefrom(out readLength);
-                if (bytes != null)
-                {
-                    str = Encoding.ASCII.GetString(bytes, 0, readLength);
-                    if ("OK\r\n".Equals(str))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }*//*
-
-            return false;
-        }*/
+            bool success = Write(address, ushorts);
+            return success;
+        }
 
         #endregion
 
@@ -642,8 +597,8 @@ namespace MELSECA1ETool
                     bytes = new byte[readResult.Content.Length * 2];
                     for (int i = 0; i < readResult.Content.Length; i++)
                     {
-                        bytes[(i * 2) + 1] = (byte)(readResult.Content[i] & 0x00ff);
-                        bytes[i * 2] = (byte)(readResult.Content[i] >> 8);
+                        bytes[i * 2] = (byte)(readResult.Content[i] & 0x00ff);
+                        bytes[(i * 2) + 1] = (byte)(readResult.Content[i] >> 8);
                     }
                     recStr = Encoding.ASCII.GetString(bytes);
                     result.Content = recStr;
@@ -657,6 +612,11 @@ namespace MELSECA1ETool
 
             }
             return result;
+        }
+
+        public void Dispose()
+        {
+            ;
         }
 
         #endregion
@@ -714,9 +674,14 @@ namespace MELSECA1ETool
         X = 0x5820,
         Y = 0x5920,
         M = 0x4D20,
-        L = 0x4D20,
-        S = 0x4D20,
+        L = 0x4C20,
+        S = 0x5320,
         D = 0x4420,
+        SM = 0x534D,
+        SD = 0x5344,
+        Z = 0x5A20,
+        LZ = 0x4C5A,
+        R = 0x5220,
     }
 
     #endregion
@@ -770,21 +735,45 @@ namespace MELSECA1ETool
                 case "x":
                     addressName = MELSECAddressName.X;
                     break;
-                /*case "Y":
+                case "Y":
+                case "y":
                     addressName = MELSECAddressName.Y;
                     break;
                 case "M":
+                case "m":
                     addressName = MELSECAddressName.M;
                     break;
                 case "L":
+                case "l":
                     addressName = MELSECAddressName.L;
                     break;
                 case "S":
+                case "s":
                     addressName = MELSECAddressName.S;
-                    break;*/
+                    break;
                 case "D":
                 case "d":
                     addressName = MELSECAddressName.D;
+                    break;
+                case "SM":
+                case "sm":
+                    addressName = MELSECAddressName.SM;
+                    break;
+                case "SD":
+                case "sd":
+                    addressName = MELSECAddressName.SD;
+                    break;
+                case "Z":
+                case "z":
+                    addressName = MELSECAddressName.Z;
+                    break;
+                case "LZ":
+                case "lz":
+                    addressName = MELSECAddressName.LZ;
+                    break;
+                case "R":
+                case "r":
+                    addressName = MELSECAddressName.R;
                     break;
                 default:
                     addressName = MELSECAddressName.D;
@@ -815,21 +804,45 @@ namespace MELSECA1ETool
                 case "x":
                     addressName = MELSECAddressName.X;
                     break;
-                /*case "Y":
+                case "Y":
+                case "y":
                     addressName = MELSECAddressName.Y;
                     break;
                 case "M":
+                case "m":
                     addressName = MELSECAddressName.M;
                     break;
                 case "L":
+                case "l":
                     addressName = MELSECAddressName.L;
                     break;
                 case "S":
+                case "s":
                     addressName = MELSECAddressName.S;
-                    break;*/
+                    break;
                 case "D":
                 case "d":
                     addressName = MELSECAddressName.D;
+                    break;
+                case "SM":
+                case "sm":
+                    addressName = MELSECAddressName.SM;
+                    break;
+                case "SD":
+                case "sd":
+                    addressName = MELSECAddressName.SD;
+                    break;
+                case "Z":
+                case "z":
+                    addressName = MELSECAddressName.Z;
+                    break;
+                case "LZ":
+                case "lz":
+                    addressName = MELSECAddressName.LZ;
+                    break;
+                case "R":
+                case "r":
+                    addressName = MELSECAddressName.R;
                     break;
                 default:
                     addressName = MELSECAddressName.D;

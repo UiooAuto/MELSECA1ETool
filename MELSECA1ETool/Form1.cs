@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MELSECA1ETool;
 
 namespace MELSECA1ETool
 {
@@ -24,7 +25,7 @@ namespace MELSECA1ETool
         public Form1()
         {
             InitializeComponent();
-            this.Text = "三菱MC通信协议 1E帧二进制格式 v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.Text = "天津信息缘科技有限公司-三菱MC通信协议 1E帧二进制格式 v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             CheckForIllegalCrossThreadCalls = false;
 
             /*work = new Work();
@@ -593,8 +594,8 @@ namespace MELSECA1ETool
             btn_WriteWord.Enabled = true;
             btn_ReadDWord.Enabled = true;
             btn_WriteDWord.Enabled = true;
-            btn_ReadString.Enabled = false;
-            btn_WriteString.Enabled = false;
+            btn_ReadString.Enabled = true;
+            btn_WriteString.Enabled = true;
         }
 
         private void cb_DoubleThreadTest_CheckedChanged(object sender, EventArgs e)
@@ -610,6 +611,32 @@ namespace MELSECA1ETool
             if (cb_ThreadReadOpen.Checked == true)
             {
                 cb_DoubleThreadTest.Checked = false;
+            }
+        }
+
+        private void btn_ReadString_Click(object sender, EventArgs e)
+        {
+            ReadResult<string> readResult = plc1.ReadString(tb_ReadStringAddress.Text, int.Parse(tb_ReadStringLength.Text));
+            if (readResult.IsSuccess)
+            {
+                Show1(readResult.Content);
+            }
+            else
+            {
+                Show1("读取失败");
+            }
+        }
+
+        private void btn_WriteString_Click(object sender, EventArgs e)
+        {
+            bool v = plc1.Write(tb_WriteStringAddress.Text, tb_WriteStringValue.Text);
+            if (v)
+            {
+                Show1("写入成功");
+            }
+            else
+            {
+                Show1("写入失败");
             }
         }
     }

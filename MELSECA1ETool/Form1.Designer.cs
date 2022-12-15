@@ -63,13 +63,12 @@
             this.btn_ReadBool = new System.Windows.Forms.Button();
             this.connect = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btn_WriteString = new System.Windows.Forms.Button();
             this.btn_ReadString = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tb_WriteStringValue = new System.Windows.Forms.TextBox();
+            this.tb_WriteStringAddress = new System.Windows.Forms.TextBox();
+            this.tb_ReadStringLength = new System.Windows.Forms.TextBox();
+            this.tb_ReadStringAddress = new System.Windows.Forms.TextBox();
             this.cb_DoubleThreadTest = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -394,17 +393,6 @@
             this.label6.TabIndex = 86;
             this.label6.Text = "label6";
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(267, 361);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(60, 16);
-            this.checkBox1.TabIndex = 85;
-            this.checkBox1.Text = "有符号";
-            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // btn_WriteString
             // 
             this.btn_WriteString.Enabled = false;
@@ -425,35 +413,35 @@
             this.btn_ReadString.Text = "读取字符串";
             this.btn_ReadString.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tb_WriteStringValue
             // 
-            this.textBox1.Location = new System.Drawing.Point(143, 396);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(312, 21);
-            this.textBox1.TabIndex = 82;
+            this.tb_WriteStringValue.Location = new System.Drawing.Point(143, 396);
+            this.tb_WriteStringValue.Name = "tb_WriteStringValue";
+            this.tb_WriteStringValue.Size = new System.Drawing.Size(312, 21);
+            this.tb_WriteStringValue.TabIndex = 82;
             // 
-            // textBox2
+            // tb_WriteStringAddress
             // 
-            this.textBox2.Location = new System.Drawing.Point(20, 396);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 81;
-            this.textBox2.Text = "d100";
+            this.tb_WriteStringAddress.Location = new System.Drawing.Point(20, 396);
+            this.tb_WriteStringAddress.Name = "tb_WriteStringAddress";
+            this.tb_WriteStringAddress.Size = new System.Drawing.Size(100, 21);
+            this.tb_WriteStringAddress.TabIndex = 81;
+            this.tb_WriteStringAddress.Text = "d100";
             // 
-            // textBox3
+            // tb_ReadStringLength
             // 
-            this.textBox3.Location = new System.Drawing.Point(143, 359);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 80;
+            this.tb_ReadStringLength.Location = new System.Drawing.Point(143, 359);
+            this.tb_ReadStringLength.Name = "tb_ReadStringLength";
+            this.tb_ReadStringLength.Size = new System.Drawing.Size(100, 21);
+            this.tb_ReadStringLength.TabIndex = 80;
             // 
-            // textBox4
+            // tb_ReadStringAddress
             // 
-            this.textBox4.Location = new System.Drawing.Point(20, 359);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 21);
-            this.textBox4.TabIndex = 79;
-            this.textBox4.Text = "d100";
+            this.tb_ReadStringAddress.Location = new System.Drawing.Point(20, 359);
+            this.tb_ReadStringAddress.Name = "tb_ReadStringAddress";
+            this.tb_ReadStringAddress.Size = new System.Drawing.Size(100, 21);
+            this.tb_ReadStringAddress.TabIndex = 79;
+            this.tb_ReadStringAddress.Text = "d100";
             // 
             // cb_DoubleThreadTest
             // 
@@ -474,13 +462,12 @@
             this.ClientSize = new System.Drawing.Size(1061, 618);
             this.Controls.Add(this.cb_DoubleThreadTest);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btn_WriteString);
             this.Controls.Add(this.btn_ReadString);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.tb_WriteStringValue);
+            this.Controls.Add(this.tb_WriteStringAddress);
+            this.Controls.Add(this.tb_ReadStringLength);
+            this.Controls.Add(this.tb_ReadStringAddress);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.btn_CheckConnect);
             this.Controls.Add(this.btn_StopThreadRead);
@@ -559,13 +546,12 @@
         private System.Windows.Forms.Button btn_ReadBool;
         private System.Windows.Forms.Button connect;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button btn_WriteString;
         private System.Windows.Forms.Button btn_ReadString;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox tb_WriteStringValue;
+        private System.Windows.Forms.TextBox tb_WriteStringAddress;
+        private System.Windows.Forms.TextBox tb_ReadStringLength;
+        private System.Windows.Forms.TextBox tb_ReadStringAddress;
         private System.Windows.Forms.CheckBox cb_DoubleThreadTest;
     }
 }
