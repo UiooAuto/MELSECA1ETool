@@ -161,7 +161,7 @@ namespace MELSECA1ETool
         {
             if (socket != null)
             {
-                byte[] recBytes = new byte[1024 * 1024];
+                byte[] recBytes = new byte[1024];
                 try
                 {
                     a = socket.Receive(recBytes);
@@ -196,7 +196,7 @@ namespace MELSECA1ETool
             int revNum = 0;
             lock (lock1)
             {
-                byte[] recBytes = new byte[1024 * 1024];
+                byte[] recBytes;
                 bool sendOK = Sendto(cmd);
                 if (sendOK)
                 {
