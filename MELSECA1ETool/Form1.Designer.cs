@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.listBox2 = new System.Windows.Forms.ListBox();
-            this.btn_CheckConnect = new System.Windows.Forms.Button();
             this.btn_StopThreadRead = new System.Windows.Forms.Button();
             this.cb_ThreadReadOpen = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -90,17 +89,6 @@
             this.listBox2.Size = new System.Drawing.Size(230, 568);
             this.listBox2.TabIndex = 78;
             // 
-            // btn_CheckConnect
-            // 
-            this.btn_CheckConnect.Location = new System.Drawing.Point(465, 79);
-            this.btn_CheckConnect.Name = "btn_CheckConnect";
-            this.btn_CheckConnect.Size = new System.Drawing.Size(93, 23);
-            this.btn_CheckConnect.TabIndex = 77;
-            this.btn_CheckConnect.Text = "连接测试";
-            this.btn_CheckConnect.UseVisualStyleBackColor = true;
-            this.btn_CheckConnect.Visible = false;
-            this.btn_CheckConnect.Click += new System.EventHandler(this.btn_CheckConnect_Click);
-            // 
             // btn_StopThreadRead
             // 
             this.btn_StopThreadRead.Location = new System.Drawing.Point(465, 551);
@@ -157,7 +145,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(132, 40);
+            this.label5.Location = new System.Drawing.Point(133, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 12);
             this.label5.TabIndex = 69;
@@ -166,7 +154,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 40);
+            this.label4.Location = new System.Drawing.Point(10, 54);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(17, 12);
             this.label4.TabIndex = 68;
@@ -234,7 +222,7 @@
             this.tb_WriteDWordAddress.Name = "tb_WriteDWordAddress";
             this.tb_WriteDWordAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_WriteDWordAddress.TabIndex = 61;
-            this.tb_WriteDWordAddress.Text = "DM1900";
+            this.tb_WriteDWordAddress.Text = "D100";
             // 
             // tb_ReadDWordLength
             // 
@@ -249,7 +237,7 @@
             this.tb_ReadDWordAddress.Name = "tb_ReadDWordAddress";
             this.tb_ReadDWordAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadDWordAddress.TabIndex = 59;
-            this.tb_ReadDWordAddress.Text = "DM1900";
+            this.tb_ReadDWordAddress.Text = "D100";
             // 
             // listBox1
             // 
@@ -275,7 +263,7 @@
             // btn_WriteBool
             // 
             this.btn_WriteBool.Enabled = false;
-            this.btn_WriteBool.Location = new System.Drawing.Point(457, 55);
+            this.btn_WriteBool.Location = new System.Drawing.Point(457, 50);
             this.btn_WriteBool.Name = "btn_WriteBool";
             this.btn_WriteBool.Size = new System.Drawing.Size(93, 23);
             this.btn_WriteBool.TabIndex = 56;
@@ -307,22 +295,22 @@
             this.tb_WriteWordAddress.Name = "tb_WriteWordAddress";
             this.tb_WriteWordAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_WriteWordAddress.TabIndex = 53;
-            this.tb_WriteWordAddress.Text = "DM1900";
+            this.tb_WriteWordAddress.Text = "D100";
             // 
             // tb_WriteBoolValue
             // 
-            this.tb_WriteBoolValue.Location = new System.Drawing.Point(126, 55);
+            this.tb_WriteBoolValue.Location = new System.Drawing.Point(126, 50);
             this.tb_WriteBoolValue.Name = "tb_WriteBoolValue";
             this.tb_WriteBoolValue.Size = new System.Drawing.Size(312, 21);
             this.tb_WriteBoolValue.TabIndex = 52;
             // 
             // tb_WriteBoolAddress
             // 
-            this.tb_WriteBoolAddress.Location = new System.Drawing.Point(3, 55);
+            this.tb_WriteBoolAddress.Location = new System.Drawing.Point(3, 50);
             this.tb_WriteBoolAddress.Name = "tb_WriteBoolAddress";
             this.tb_WriteBoolAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_WriteBoolAddress.TabIndex = 51;
-            this.tb_WriteBoolAddress.Text = "DM1900";
+            this.tb_WriteBoolAddress.Text = "D100";
             // 
             // tb_ReadWordLength
             // 
@@ -337,27 +325,27 @@
             this.tb_ReadWordAddress.Name = "tb_ReadWordAddress";
             this.tb_ReadWordAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadWordAddress.TabIndex = 49;
-            this.tb_ReadWordAddress.Text = "DM1900";
+            this.tb_ReadWordAddress.Text = "D100";
             // 
             // tb_ReadBoolLength
             // 
             this.tb_ReadBoolLength.Enabled = false;
-            this.tb_ReadBoolLength.Location = new System.Drawing.Point(126, 17);
+            this.tb_ReadBoolLength.Location = new System.Drawing.Point(126, 12);
             this.tb_ReadBoolLength.Name = "tb_ReadBoolLength";
             this.tb_ReadBoolLength.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadBoolLength.TabIndex = 48;
             // 
             // tb_ReadBoolAddress
             // 
-            this.tb_ReadBoolAddress.Location = new System.Drawing.Point(3, 17);
+            this.tb_ReadBoolAddress.Location = new System.Drawing.Point(3, 12);
             this.tb_ReadBoolAddress.Name = "tb_ReadBoolAddress";
             this.tb_ReadBoolAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadBoolAddress.TabIndex = 47;
-            this.tb_ReadBoolAddress.Text = "DM1900";
+            this.tb_ReadBoolAddress.Text = "D100";
             // 
             // tb_port
             // 
-            this.tb_port.Location = new System.Drawing.Point(134, 55);
+            this.tb_port.Location = new System.Drawing.Point(135, 69);
             this.tb_port.Name = "tb_port";
             this.tb_port.Size = new System.Drawing.Size(100, 21);
             this.tb_port.TabIndex = 46;
@@ -365,7 +353,7 @@
             // 
             // tb_ip
             // 
-            this.tb_ip.Location = new System.Drawing.Point(11, 55);
+            this.tb_ip.Location = new System.Drawing.Point(12, 69);
             this.tb_ip.Name = "tb_ip";
             this.tb_ip.Size = new System.Drawing.Size(100, 21);
             this.tb_ip.TabIndex = 45;
@@ -374,7 +362,7 @@
             // btn_ReadBool
             // 
             this.btn_ReadBool.Enabled = false;
-            this.btn_ReadBool.Location = new System.Drawing.Point(457, 17);
+            this.btn_ReadBool.Location = new System.Drawing.Point(457, 12);
             this.btn_ReadBool.Name = "btn_ReadBool";
             this.btn_ReadBool.Size = new System.Drawing.Size(93, 23);
             this.btn_ReadBool.TabIndex = 44;
@@ -384,7 +372,7 @@
             // 
             // connect
             // 
-            this.connect.Location = new System.Drawing.Point(465, 53);
+            this.connect.Location = new System.Drawing.Point(465, 68);
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(93, 23);
             this.connect.TabIndex = 43;
@@ -434,7 +422,7 @@
             this.tb_WriteStringAddress.Name = "tb_WriteStringAddress";
             this.tb_WriteStringAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_WriteStringAddress.TabIndex = 81;
-            this.tb_WriteStringAddress.Text = "DM1900";
+            this.tb_WriteStringAddress.Text = "D100";
             // 
             // tb_ReadStringLength
             // 
@@ -449,7 +437,7 @@
             this.tb_ReadStringAddress.Name = "tb_ReadStringAddress";
             this.tb_ReadStringAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadStringAddress.TabIndex = 79;
-            this.tb_ReadStringAddress.Text = "DM1900";
+            this.tb_ReadStringAddress.Text = "D100";
             // 
             // cb_DoubleThreadTest
             // 
@@ -500,7 +488,6 @@
             this.p_Int32Contorl.Controls.Add(this.btn_ReadDWord);
             this.p_Int32Contorl.Controls.Add(this.btn_WriteDWord);
             this.p_Int32Contorl.Controls.Add(this.cb_IsNotUDWord);
-            this.p_Int32Contorl.Enabled = false;
             this.p_Int32Contorl.Location = new System.Drawing.Point(9, 289);
             this.p_Int32Contorl.Name = "p_Int32Contorl";
             this.p_Int32Contorl.Size = new System.Drawing.Size(558, 83);
@@ -531,7 +518,6 @@
             this.Controls.Add(this.cb_DoubleThreadTest);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.listBox2);
-            this.Controls.Add(this.btn_CheckConnect);
             this.Controls.Add(this.btn_StopThreadRead);
             this.Controls.Add(this.cb_ThreadReadOpen);
             this.Controls.Add(this.label7);
@@ -562,7 +548,6 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.Button btn_CheckConnect;
         private System.Windows.Forms.Button btn_StopThreadRead;
         private System.Windows.Forms.CheckBox cb_ThreadReadOpen;
         private System.Windows.Forms.Label label7;
