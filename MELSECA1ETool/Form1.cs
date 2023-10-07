@@ -464,88 +464,88 @@ namespace MELSECA1ETool
 
         private void btn_WriteDWord_Click(object sender, EventArgs e)
         {
-            bool v;
+                bool v;
 
-            if (tb_WriteBoolValue.Text.Contains('，'))
-            {
-                MessageBox.Show("请使用英文逗号分隔");
-                return;
-            }
-
-            if (tb_WriteDWordValue.Text.Contains(','))
-            {
-                string[] strings = tb_WriteDWordValue.Text.Split(',');
-
-                if (cb_IsNotUDWord.Checked)
+                if (tb_WriteBoolValue.Text.Contains('，'))
                 {
-                    int[] ints = new int[strings.Length];
-                    for (int i = 0; i < strings.Length; i++)
-                    {
-                        ints[i] = int.Parse(strings[i]);
-                    }
-                    Show1("开始写入");
-                    v = plc1.Write(tb_WriteDWordAddress.Text, ints);
+                    MessageBox.Show("请使用英文逗号分隔");
+                    return;
+                }
 
-                    if (v)
+                if (tb_WriteDWordValue.Text.Contains(','))
+                {
+                    string[] strings = tb_WriteDWordValue.Text.Split(',');
+
+                    if (cb_IsNotUDWord.Checked)
                     {
-                        Show1("写入成功");
+                        int[] ints = new int[strings.Length];
+                        for (int i = 0; i < strings.Length; i++)
+                        {
+                            ints[i] = int.Parse(strings[i]);
+                        }
+                        Show1("开始写入");
+                        v = plc1.Write(tb_WriteDWordAddress.Text, ints);
+
+                        if (v)
+                        {
+                            Show1("写入成功");
+                        }
+                        else
+                        {
+                            Show1("写入失败");
+                        }
                     }
                     else
                     {
-                        Show1("写入失败");
+                        uint[] uints = new uint[strings.Length];
+                        for (int i = 0; i < strings.Length; i++)
+                        {
+                            uints[i] = (uint)int.Parse(strings[i]);
+                        }
+                        Show1("开始写入");
+                        v = plc1.Write(tb_WriteDWordAddress.Text, uints);
+
+                        if (v)
+                        {
+                            Show1("写入成功");
+                        }
+                        else
+                        {
+                            Show1("写入失败");
+                        }
                     }
                 }
                 else
                 {
-                    uint[] uints = new uint[strings.Length];
-                    for (int i = 0; i < strings.Length; i++)
+                    if (cb_IsNotUDWord.Checked)
                     {
-                        uints[i] = (uint)int.Parse(strings[i]);
-                    }
-                    Show1("开始写入");
-                    v = plc1.Write(tb_WriteDWordAddress.Text, uints);
+                        Show1("开始写入");
+                        v = plc1.Write(tb_WriteDWordAddress.Text, int.Parse(tb_WriteDWordValue.Text));
 
-                    if (v)
-                    {
-                        Show1("写入成功");
+                        if (v)
+                        {
+                            Show1("写入成功");
+                        }
+                        else
+                        {
+                            Show1("写入失败");
+                        }
                     }
                     else
                     {
-                        Show1("写入失败");
-                    }
-                }
-            }
-            else
-            {
-                if (cb_IsNotUDWord.Checked)
-                {
-                    Show1("开始写入");
-                    v = plc1.Write(tb_WriteDWordAddress.Text, int.Parse(tb_WriteDWordValue.Text));
+                        Show1("开始写入");
+                        v = plc1.Write(tb_WriteDWordAddress.Text, uint.Parse(tb_WriteDWordValue.Text));
 
-                    if (v)
-                    {
-                        Show1("写入成功");
-                    }
-                    else
-                    {
-                        Show1("写入失败");
-                    }
-                }
-                else
-                {
-                    Show1("开始写入");
-                    v = plc1.Write(tb_WriteDWordAddress.Text, uint.Parse(tb_WriteDWordValue.Text));
-
-                    if (v)
-                    {
-                        Show1("写入成功");
-                    }
-                    else
-                    {
-                        Show1("写入失败");
+                        if (v)
+                        {
+                            Show1("写入成功");
+                        }
+                        else
+                        {
+                            Show1("写入失败");
+                        }
                     }
                 }
-            }
         }
 
         private void btn_StopThreadRead_Click(object sender, EventArgs e)

@@ -398,6 +398,7 @@
             this.btn_WriteString.TabIndex = 84;
             this.btn_WriteString.Text = "写入字符串";
             this.btn_WriteString.UseVisualStyleBackColor = true;
+            this.btn_WriteString.Click += new System.EventHandler(this.btn_WriteString_Click);
             // 
             // btn_ReadString
             // 
@@ -408,6 +409,7 @@
             this.btn_ReadString.TabIndex = 83;
             this.btn_ReadString.Text = "读取字符串";
             this.btn_ReadString.UseVisualStyleBackColor = true;
+            this.btn_ReadString.Click += new System.EventHandler(this.btn_ReadString_Click);
             // 
             // tb_WriteStringValue
             // 
