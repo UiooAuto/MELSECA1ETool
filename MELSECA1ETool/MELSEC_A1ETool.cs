@@ -589,6 +589,14 @@ namespace MELSECA1ETool
             byte[] bytes;
             ReadResult<string> result = new ReadResult<string>();
             result.IsSuccess = false; //默认值为false，失败
+            if (length % 2 == 0)
+            {
+                length = length / 2;
+            }
+            else
+            {
+                length = (length / 2) + 1;
+            }
             ReadResult<ushort[]> readResult = ReadUInt16(address, length);
             if (readResult.IsSuccess)
             {
@@ -601,6 +609,11 @@ namespace MELSECA1ETool
                         bytes[(i * 2) + 1] = (byte)(readResult.Content[i] >> 8);
                     }
                     recStr = Encoding.ASCII.GetString(bytes);
+                    int index = recStr.IndexOf('\0');
+                    if (index != -1)
+                    {
+                        recStr = recStr.Substring(0, index);
+                    }
                     result.Content = recStr;
                     result.IsSuccess = true;
                     return result;
