@@ -222,6 +222,53 @@ namespace MELSECA1ETool
 
         #region 写入PLC
 
+        public bool Write(string address, bool cmd)
+        {
+            int readLength;
+            bool[] bools = new bool[] { cmd };
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEBOOL, address, bools);
+
+            byte[] bytes = SendAndRecivefrom(request.GetBytes());
+
+            if (bytes != null)
+            {
+                MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                if (response.endCode == EndCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public bool Write(string address, bool[] cmd)
+        {
+            int readLength;
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEBOOL, address, cmd);
+
+            byte[] bytes = SendAndRecivefrom(request.GetBytes());
+
+            if (bytes != null)
+            {
+                MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+                if (response.endCode == EndCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
         public bool Write(string address, ushort cmd)
         {
             int readLength;
@@ -735,7 +782,6 @@ namespace MELSECA1ETool
         /// <param name="request">请求类型</param>
         /// <param name="address">操作地址</param>
         /// <param name="length">操作数量</param>
-        /// <param name="overTime">超时时间</param>
         public MELSEC_A1E_Request(SubframeRequest request, string address, int length)
         {
             MELSECAddressName addressName;
@@ -803,9 +849,74 @@ namespace MELSECA1ETool
         /// </summary>
         /// <param name="request">请求类型</param>
         /// <param name="address">操作地址</param>
-        /// <param name="length">操作数量</param>
-        /// <param name="overTime">超时时间</param>
         public MELSEC_A1E_Request(SubframeRequest request, string address, ushort[] value)
+        {
+            MELSECAddressName addressName;
+            string addresstype = address.Substring(0, 1);
+            string addressNumStr = address.Substring(1);
+            int addressNum = int.Parse(addressNumStr);
+            switch (addresstype)
+            {
+                case "X":
+                case "x":
+                    addressName = MELSECAddressName.X;
+                    break;
+                case "Y":
+                case "y":
+                    addressName = MELSECAddressName.Y;
+                    break;
+                case "M":
+                case "m":
+                    addressName = MELSECAddressName.M;
+                    break;
+                case "L":
+                case "l":
+                    addressName = MELSECAddressName.L;
+                    break;
+                case "S":
+                case "s":
+                    addressName = MELSECAddressName.S;
+                    break;
+                case "D":
+                case "d":
+                    addressName = MELSECAddressName.D;
+                    break;
+                case "SM":
+                case "sm":
+                    addressName = MELSECAddressName.SM;
+                    break;
+                case "SD":
+                case "sd":
+                    addressName = MELSECAddressName.SD;
+                    break;
+                case "Z":
+                case "z":
+                    addressName = MELSECAddressName.Z;
+                    break;
+                case "LZ":
+                case "lz":
+                    addressName = MELSECAddressName.LZ;
+                    break;
+                case "R":
+                case "r":
+                    addressName = MELSECAddressName.R;
+                    break;
+                default:
+                    addressName = MELSECAddressName.D;
+                    break;
+            }
+            this.request = request;
+            this.plcNo = 0xff;
+            this.acpuWatch = 0x0c;
+            this.requestData = new RequestData(addressName, addressNum, value);
+        }
+
+        /// <summary>
+        /// 生成读写PLC的请求报文
+        /// </summary>
+        /// <param name="request">请求类型</param>
+        /// <param name="address">操作地址</param>
+        public MELSEC_A1E_Request(SubframeRequest request, string address, bool[] value)
         {
             MELSECAddressName addressName;
             string addresstype = address.Substring(0, 1);
@@ -918,7 +1029,7 @@ namespace MELSECA1ETool
         /// <summary>
         /// 
         /// </summary>
-        private ushort[] writeData;
+        private Array writeData;
 
         /// <summary>
         /// 请求数据总长
@@ -962,16 +1073,28 @@ namespace MELSECA1ETool
 
         #region bool数据批量写入请求数据
 
-        /*public RequestData(MELSECAddressName addressName, int addressNum, int length, bool[] value)
+        public RequestData(MELSECAddressName addressName, int addressNum, bool[] value)
         {
             this.addressName = addressName;
             this.addressNum = addressNum;
-            if (length >= 256)
+
+            if (value.Length >= 256)
             {
                 this.length = 0x00;
+                this.value = new byte[8 + (256 * 2)];
             }
+            else
+            {
+                this.length = (byte)value.Length;
+                this.value = new byte[8 + value.Length];
+            }
+
             this.endByte = 0x00;
-        }*/
+            this.writeData = value;
+
+            outBytes = GetBytes();
+            totalLength = outBytes.Length;
+        }
 
         #endregion
 
@@ -1036,12 +1159,35 @@ namespace MELSECA1ETool
 
                 value[7] = endByte;
 
-                for (int i = 0; i < length; i++)
+                Type type = writeData.GetValue(0).GetType();
+                if (type == typeof(ushort))
                 {
-                    //ushort tempUshort = ushort.Parse(writeData[i].ToString(), NumberStyles.HexNumber);
-                    ushort tempUshort = writeData[i];
-                    value[8 + (i * 2)] = (byte)(tempUshort & 0x00ff);
-                    value[9 + (i * 2)] = (byte)((tempUshort & 0xff00) >> 8);
+                    for (int i = 0; i < length; i++)
+                    {
+                        //ushort tempUshort = ushort.Parse(writeData[i].ToString(), NumberStyles.HexNumber);
+                        ushort tempUshort = (ushort)writeData.GetValue(i);
+                        value[8 + (i * 2)] = (byte)(tempUshort & 0x00ff);
+                        value[9 + (i * 2)] = (byte)((tempUshort & 0xff00) >> 8);
+                    }
+                }
+                else if (type == typeof(bool))
+                {
+                    byte tempByte = 0x00;
+                    for (int i = 0; i < length; i++)
+                    {
+                        int index = i / 2;//获取操作value数组的索引
+                        int highOrlow = i % 2;//获取当前应该往高位写还是低位写
+                        if (highOrlow == 0)
+                        {
+                            tempByte = 0x10;
+                        }
+                        else if (highOrlow == 1)
+                        {
+                            tempByte = 0x01;
+                        }
+                        tempByte = (byte)((bool)writeData.GetValue(i) ? tempByte : 0x00);
+                        value[8 + index] = (byte)(value[8 + index] | tempByte);
+                    }
                 }
             }
             return value;

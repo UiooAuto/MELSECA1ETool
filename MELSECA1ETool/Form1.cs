@@ -298,7 +298,7 @@ namespace MELSECA1ETool
 
         private void btn_WriteBool_Click(object sender, EventArgs e)
         {
-            /*bool v;
+            bool v = false;
             if (tb_WriteBoolValue.Text.Contains('，'))
             {
                 MessageBox.Show("请使用英文逗号分隔");
@@ -325,7 +325,7 @@ namespace MELSECA1ETool
             else
             {
                 Show1("写入失败");
-            }*/
+            }
         }
 
         private void btn_WriteWord_Click(object sender, EventArgs e)
@@ -588,8 +588,8 @@ namespace MELSECA1ETool
 
         public void ButtonNo()
         {
-            btn_ReadBool.Enabled = false;
-            btn_WriteBool.Enabled = false;
+            btn_ReadBool.Enabled = true;
+            btn_WriteBool.Enabled = true;
             btn_ReadWord.Enabled = true;
             btn_WriteWord.Enabled = true;
             btn_ReadDWord.Enabled = true;
@@ -638,6 +638,26 @@ namespace MELSECA1ETool
             {
                 Show1("写入失败");
             }
+        }
+
+        private void tb_ReadBoolAddress_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tb_ReadBoolLength_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tb_WriteBoolAddress_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tb_WriteBoolValue_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

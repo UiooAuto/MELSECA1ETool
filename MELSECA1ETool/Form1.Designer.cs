@@ -262,7 +262,6 @@
             // 
             // btn_WriteBool
             // 
-            this.btn_WriteBool.Enabled = false;
             this.btn_WriteBool.Location = new System.Drawing.Point(457, 50);
             this.btn_WriteBool.Name = "btn_WriteBool";
             this.btn_WriteBool.Size = new System.Drawing.Size(93, 23);
@@ -303,6 +302,7 @@
             this.tb_WriteBoolValue.Name = "tb_WriteBoolValue";
             this.tb_WriteBoolValue.Size = new System.Drawing.Size(312, 21);
             this.tb_WriteBoolValue.TabIndex = 52;
+            this.tb_WriteBoolValue.TextChanged += new System.EventHandler(this.tb_WriteBoolValue_TextChanged);
             // 
             // tb_WriteBoolAddress
             // 
@@ -310,7 +310,8 @@
             this.tb_WriteBoolAddress.Name = "tb_WriteBoolAddress";
             this.tb_WriteBoolAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_WriteBoolAddress.TabIndex = 51;
-            this.tb_WriteBoolAddress.Text = "D100";
+            this.tb_WriteBoolAddress.Text = "m100";
+            this.tb_WriteBoolAddress.TextChanged += new System.EventHandler(this.tb_WriteBoolAddress_TextChanged);
             // 
             // tb_ReadWordLength
             // 
@@ -329,11 +330,11 @@
             // 
             // tb_ReadBoolLength
             // 
-            this.tb_ReadBoolLength.Enabled = false;
             this.tb_ReadBoolLength.Location = new System.Drawing.Point(126, 12);
             this.tb_ReadBoolLength.Name = "tb_ReadBoolLength";
             this.tb_ReadBoolLength.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadBoolLength.TabIndex = 48;
+            this.tb_ReadBoolLength.TextChanged += new System.EventHandler(this.tb_ReadBoolLength_TextChanged);
             // 
             // tb_ReadBoolAddress
             // 
@@ -341,7 +342,8 @@
             this.tb_ReadBoolAddress.Name = "tb_ReadBoolAddress";
             this.tb_ReadBoolAddress.Size = new System.Drawing.Size(100, 21);
             this.tb_ReadBoolAddress.TabIndex = 47;
-            this.tb_ReadBoolAddress.Text = "D100";
+            this.tb_ReadBoolAddress.Text = "m100";
+            this.tb_ReadBoolAddress.TextChanged += new System.EventHandler(this.tb_ReadBoolAddress_TextChanged);
             // 
             // tb_port
             // 
@@ -349,7 +351,7 @@
             this.tb_port.Name = "tb_port";
             this.tb_port.Size = new System.Drawing.Size(100, 21);
             this.tb_port.TabIndex = 46;
-            this.tb_port.Text = "8501";
+            this.tb_port.Text = "6000";
             // 
             // tb_ip
             // 
@@ -361,7 +363,6 @@
             // 
             // btn_ReadBool
             // 
-            this.btn_ReadBool.Enabled = false;
             this.btn_ReadBool.Location = new System.Drawing.Point(457, 12);
             this.btn_ReadBool.Name = "btn_ReadBool";
             this.btn_ReadBool.Size = new System.Drawing.Size(93, 23);
@@ -461,7 +462,6 @@
             this.p_BoolContorl.Controls.Add(this.tb_WriteBoolAddress);
             this.p_BoolContorl.Controls.Add(this.tb_WriteBoolValue);
             this.p_BoolContorl.Controls.Add(this.btn_WriteBool);
-            this.p_BoolContorl.Enabled = false;
             this.p_BoolContorl.Location = new System.Drawing.Point(9, 109);
             this.p_BoolContorl.Name = "p_BoolContorl";
             this.p_BoolContorl.Size = new System.Drawing.Size(558, 83);
