@@ -400,7 +400,7 @@ namespace MELSECA1ETool
             ReadResult<ushort> result = new ReadResult<ushort>();
             result.IsSuccess = false; //默认值为false，失败
 
-            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, 1, ConnectTimeOut);
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, 1);
             bool isSuccess = TryRead(request.GetBytes(), out bytes);
 
             //如果Socket通信失败，则返回失败
@@ -454,7 +454,7 @@ namespace MELSECA1ETool
             ReadResult<ushort[]> result = new ReadResult<ushort[]>();
             result.IsSuccess = false; //默认值为false，失败
 
-            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, length, ConnectTimeOut);
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READINT16, address, length);
             bool isSuccess = TryRead(request.GetBytes(), out bytes);
 
             //如果Socket通信失败，则返回失败
@@ -736,7 +736,7 @@ namespace MELSECA1ETool
         /// <param name="address">操作地址</param>
         /// <param name="length">操作数量</param>
         /// <param name="overTime">超时时间</param>
-        public MELSEC_A1E_Request(SubframeRequest request, string address, int length, int overTime)
+        public MELSEC_A1E_Request(SubframeRequest request, string address, int length)
         {
             MELSECAddressName addressName;
             string addresstype = address.Substring(0, 1);
