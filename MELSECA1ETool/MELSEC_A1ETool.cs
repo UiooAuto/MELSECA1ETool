@@ -207,7 +207,9 @@ namespace MELSECA1ETool
                     }
                     else
                     {
-                        return recBytes;
+                        byte[] resultArr = new byte[revNum];
+                        Array.Copy(recBytes, 0, resultArr, 0, revNum);
+                        return resultArr;
                     }
                 }
                 else
@@ -433,6 +435,93 @@ namespace MELSECA1ETool
             }
             readResult = bytes;
             return true;
+        }
+
+        /// <summary>
+        /// 读取PLC的内容
+        /// </summary>
+        /// <param name="address">读取的地址</param>
+        /// <returns>读取的结果</returns>
+        public ReadResult<bool> ReadBool(string address)
+        {
+            int recLength;
+            byte[] bytes = null;
+            ReadResult<bool> result = new ReadResult<bool>();
+            result.IsSuccess = false; //默认值为false，失败
+
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READBOOL, address, 1);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes);
+
+            //如果Socket通信失败，则返回失败
+            if (!isSuccess)
+            {
+                return result;
+            }
+
+            MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+            //如果返回报文为失败，则返回失败和错误码
+            if (response.endCode == EndCode.ERROR)
+            {
+                result.errorCode = response.errorCode;
+                return result;
+            }
+
+            result.IsSuccess = true;
+
+            result.Content = response.bytes[0] == 0x10;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 读取PLC的内容
+        /// </summary>
+        /// <param name="address">读取的地址</param>
+        /// <returns>读取的结果</returns>
+        public ReadResult<bool[]> ReadBool(string address, int length)
+        {
+            int recLength;
+            byte[] bytes = null;
+            ReadResult<bool[]> result = new ReadResult<bool[]>();
+            result.IsSuccess = false; //默认值为false，失败
+
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.READBOOL, address, length);
+            bool isSuccess = TryRead(request.GetBytes(), out bytes);
+
+            //如果Socket通信失败，则返回失败
+            if (!isSuccess)
+            {
+                return result;
+            }
+
+            MELSEC_A1E_Response response = new MELSEC_A1E_Response(bytes);
+
+            //如果返回报文为失败，则返回失败和错误码
+            if (response.endCode == EndCode.ERROR)
+            {
+                result.errorCode = response.errorCode;
+                return result;
+            }
+
+            result.IsSuccess = true;
+            result.Content = new bool[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                int index = i / 2;
+                int highOrlow = i % 2;
+                if (highOrlow == 0)
+                {
+                    result.Content[i] = 1 == response.bytes[index] >> 4;
+                }
+                else
+                {
+                    result.Content[i] = 1 == (response.bytes[index] & 0x0f);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

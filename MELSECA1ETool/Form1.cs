@@ -118,10 +118,10 @@ namespace MELSECA1ETool
 
         private void btn_ReadBool_Click(object sender, EventArgs e)
         {
-            /*int num;
+            int num;
             if (int.TryParse(tb_ReadBoolLength.Text, out num))
             {
-                ReadResult<bool[]> readResult = plc1.ReadBoolean(tb_ReadBoolAddress.Text, (UInt16)num);
+                ReadResult<bool[]> readResult = plc1.ReadBool(tb_ReadBoolAddress.Text, (UInt16)num);
                 if (readResult.IsSuccess)
                 {
                     Show1(JsonConvert.SerializeObject(readResult.Content));
@@ -133,7 +133,7 @@ namespace MELSECA1ETool
             }
             else
             {
-                ReadResult<bool> readResult = plc1.ReadBoolean(tb_ReadBoolAddress.Text);
+                ReadResult<bool> readResult = plc1.ReadBool(tb_ReadBoolAddress.Text);
                 if (readResult.IsSuccess)
                 {
                     Show1(readResult.Content.ToString());
@@ -142,7 +142,7 @@ namespace MELSECA1ETool
                 {
                     Show1("读取失败");
                 }
-            }*/
+            }
         }
 
         private void btn_ReadWord_Click(object sender, EventArgs e)
