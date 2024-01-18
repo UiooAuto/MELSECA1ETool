@@ -226,7 +226,7 @@ namespace MELSECA1ETool
         {
             int readLength;
             ushort[] ushorts = new ushort[] { cmd };
-            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts, ConnectTimeOut);
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, ushorts);
 
             byte[] bytes = SendAndRecivefrom(request.GetBytes());
 
@@ -255,7 +255,7 @@ namespace MELSECA1ETool
         public bool Write(string address, ushort[] cmd)
         {
             int readLength;
-            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, cmd, ConnectTimeOut);
+            MELSEC_A1E_Request request = new MELSEC_A1E_Request(SubframeRequest.WRITEINT16, address, cmd);
 
             byte[] bytes = SendAndRecivefrom(request.GetBytes());
 
@@ -805,7 +805,7 @@ namespace MELSECA1ETool
         /// <param name="address">操作地址</param>
         /// <param name="length">操作数量</param>
         /// <param name="overTime">超时时间</param>
-        public MELSEC_A1E_Request(SubframeRequest request, string address, ushort[] value, int overTime)
+        public MELSEC_A1E_Request(SubframeRequest request, string address, ushort[] value)
         {
             MELSECAddressName addressName;
             string addresstype = address.Substring(0, 1);
